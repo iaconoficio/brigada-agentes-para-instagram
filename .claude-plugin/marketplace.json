@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "brigada",
+  "description": "La Brigada: agentes de IA para Instagram, en español. Hecho por IA con Oficio.",
+  "owner": {
+    "name": "Toni Mont (IA con Oficio)",
+    "url": "https://tonimont.com"
+  },
+  "plugins": [
+    {
+      "name": "brigada",
+      "description": "Agentes de IA para Instagram, en español: reels, textos y carruseles con tu voz, listos para subir con las imágenes hechas. Tú apruebas y publicas.",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/iaconoficio/brigada-agentes-para-instagram"
+    }
+  ]
+}

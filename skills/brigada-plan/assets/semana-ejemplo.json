@@ -1,0 +1,14 @@
+{
+  "semana": "2026-11-02",
+  "venta_cada": 3,
+  "version": 1,
+  "piezas": [
+    {"dia": "martes", "hora": "19:00", "formato": "reel", "pata": "enseñar",
+     "tema": "No siempre es la rueda", "preparar": "lunes", "vende": false},
+    {"dia": "jueves", "hora": "19:00", "formato": "carrusel", "pata": "enseñar",
+     "tema": "Cinco cosas que miro antes de una ITV", "preparar": "miércoles", "vende": false},
+    {"dia": "sábado", "hora": "11:00", "formato": "post", "pata": "ofrecer",
+     "tema": "Por qué no cambio una pieza sin enseñártela", "vende": true,
+     "nota": "Cierre: pide cita por WhatsApp"}
+  ]
+}

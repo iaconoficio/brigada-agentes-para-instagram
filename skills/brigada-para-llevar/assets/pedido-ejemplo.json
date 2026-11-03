@@ -1,0 +1,48 @@
+{
+  "_nota": "Ejemplo inventado: Calefacción Olmo no existe. Es la misma semana que el ejemplo de brigada-emplatado.",
+  "titulo": "Tu semana del 16 de noviembre",
+  "para": "Calefacción Olmo",
+  "cuenta": "@calefaccion.olmo",
+  "aprobado": {"por": "Marta Olmo", "fecha": "2026-10-28"},
+  "marca": {
+    "fondo": "#EEF3F6",
+    "texto": "#15314B",
+    "letra": "sans"
+  },
+  "piezas": [
+    {
+      "dia": "martes 17",
+      "hora": "19:00",
+      "formato": "reel",
+      "portada": "¿Radiador frío por arriba?\n\nCasi siempre es aire. Y lo puedes sacar tú.",
+      "guion": "[plano: la mano tocando el radiador por arriba]\n> ¿Glu-glu?\n¿Tu radiador hace glu-glu y está frío por arriba?\n\n[plano: primer plano del purgador]\n> Es aire\nCasi siempre es aire. Y lo puedes sacar tú.\n\n[plano: el termostato apagándose]\n> Apaga y espera\nApaga la calefacción y espera: el agua de dentro quema.\n\n[plano: el trapo y la moneda en el purgador]\n> Un cuarto de vuelta\nTrapo debajo del purgador y un cuarto de vuelta.\n\n[plano: gotas de agua en el trapo]\n> Sin burbujas, cierra\nCuando salga agua sin burbujas, cierras.\n\n[plano: la aguja del manómetro]\n> Mira la presión\nY al final, mira la presión de la caldera.",
+      "carteles": ["¿Glu-glu?", "Es aire", "Apaga y espera", "Un cuarto de vuelta", "Sin burbujas, cierra", "Mira la presión"],
+      "texto": "Si tu radiador está frío por arriba, esto es para ti.\n\nCasi siempre es aire. Y sacarlo es cosa de diez minutos, una moneda y un trapo.\n\nEn el vídeo te enseño los pasos. El último es el que más se olvida: mirar la presión de la caldera.\n\n¿Los tuyos se abren con moneda o con llave?\n\n#calefaccion #radiadores #caldera #mantenimiento #hogar"
+    },
+    {
+      "dia": "jueves 19",
+      "hora": "19:00",
+      "formato": "carrusel",
+      "laminas": [
+        "¿Radiador frío por arriba? Casi siempre es aire, no la caldera.\n\nLo puedes sacar tú, con un trapo y poco más.",
+        "El aire se queda arriba y no deja que el agua caliente llene el radiador.\n\nPor eso suena a glu-glu y la casa tarda más en calentarse.",
+        "1. Apaga la calefacción\n\nEspera a que los radiadores se enfríen. El agua de dentro quema.",
+        "2. Busca el purgador\n\nUna válvula pequeña en una esquina de arriba. Se abre con una moneda, un destornillador plano o una llave de purgar.",
+        "3. Trapo debajo y un cuarto de vuelta\n\nPrimero sale el aire. Cuando salga agua sin burbujas, ciérralo.",
+        "4. Repite en cada radiador\n\nUno a uno, con calma.",
+        "5. Mira la presión de la caldera\n\nAl purgar, la presión baja. Si ha bajado, rellena poco a poco.",
+        "6. Vuelve a encender\n\nAl rato, toca cada radiador por arriba. Si alguno sigue frío, cuéntamelo.",
+        "Los seis pasos, juntos:\n\nApaga y espera · Busca el purgador · Un cuarto de vuelta · Repite · Mira la presión · Enciende y comprueba",
+        "¿Los tuyos se abren con moneda o con llave?"
+      ],
+      "texto": "Purgar un radiador es más fácil de lo que parece. Los seis pasos van en las láminas.\n\nGuárdatelo para cuando apriete el frío.\n\n¿Lo has hecho alguna vez o siempre llamas?\n\n#calefaccion #radiadores #caldera #hogar"
+    },
+    {
+      "dia": "sábado 21",
+      "hora": "11:00",
+      "formato": "post",
+      "lamina": "En una revisión de caldera miro tres cosas: la presión, la llama y el ruido.\n\nSi alguna falla, te la enseño antes de cambiar nada.",
+      "texto": "Lo que miro cuando vengo a revisarte la caldera, y por qué te lo enseño.\n\nNo cambio una pieza sin que la veas. Si no hace falta, no se cambia.\n\n¿Cuándo fue la última revisión de la tuya?\n\n#caldera #calefaccion #mantenimiento"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Textos con saltos de línea de Unix en todos los sistemas; los binarios, tal cual.
+* text=auto eol=lf
+*.zip binary
+*.woff2 binary
+*.png binary
+*.jpg binary

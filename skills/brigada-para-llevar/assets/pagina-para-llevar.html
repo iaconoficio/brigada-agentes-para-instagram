@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>@@TITULO@@ · Para llevar · La Brigada</title>
+<style>
+@@FUENTES@@
+:root{--crema:#F5ECD6;--marino:#1C2541;--tomate:#E0442A;--papel:#FFFBF2;--linea:rgba(28,37,65,.14);--rojo:#B3261E}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--crema);-webkit-text-size-adjust:100%}
+body{font-family:'Fraunces',Georgia,'Times New Roman',serif;color:var(--marino);background:var(--crema);line-height:1.45;
+max-width:760px;margin:0 auto;padding:0 16px 48px}
+.eti{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+display:flex;align-items:center;gap:8px}
+.sello{flex:none;width:10px;height:10px;background:var(--tomate)}
+.cab{background:var(--marino);color:var(--crema);margin:0 -16px;padding:28px 20px 30px;border-radius:0 0 28px 28px}
+h1{font-weight:650;font-size:clamp(30px,8vw,46px);line-height:1.04;letter-spacing:-.01em;margin-top:14px}
+.para{margin-top:10px;font-size:17px}
+.cuenta{font-family:'Space Mono',monospace;font-size:14px}
+.aprobado{margin-top:14px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.accion{position:sticky;top:0;z-index:2;background:var(--crema);padding:16px 0 12px;display:flex;flex-direction:column;gap:8px}
+button{font:inherit;color:inherit}
+.bajar{appearance:none;border:0;border-radius:14px;background:var(--tomate);color:#fff;font-family:'Archivo Black',sans-serif;
+font-size:18px;line-height:1.2;letter-spacing:.02em;padding:16px 18px;min-height:56px;cursor:pointer;
+box-shadow:0 10px 24px -14px rgba(224,68,42,.9)}
+.bajar[disabled]{background:#6B7080;box-shadow:none;cursor:not-allowed}
+.estado{font-size:15px;min-height:1.4em}
+.estado.mal{color:var(--rojo);font-weight:600}
+.nota{font-size:14px;margin-top:6px}
+.pieza{margin-top:26px;background:var(--papel);border-radius:22px;padding:18px 0 20px;
+box-shadow:0 14px 34px -26px rgba(28,37,65,.55)}
+.pieza>*{margin-left:18px;margin-right:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+padding:6px 11px;border-radius:999px;background:var(--marino);color:var(--crema)}
+.chip.linea{background:transparent;color:var(--marino);border:2px solid var(--marino);padding:4px 9px}
+.pieza h2{font-weight:650;font-size:24px;line-height:1.15;margin-top:12px}
+.carpeta{font-family:'Space Mono',monospace;font-size:12px;margin-top:4px;word-break:break-all}
+.tira{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 18px 6px;margin:0!important;
+-webkit-overflow-scrolling:touch}
+.img{flex:none;scroll-snap-align:center;width:78%;max-width:420px}
+.img.alta{width:56%;max-width:300px}
+.img img{display:block;width:100%;height:auto;border-radius:10px;
+box-shadow:0 1px 0 var(--linea),0 10px 26px -18px rgba(0,0,0,.6)}
+.img.cartel img{background-color:#fff;background-image:conic-gradient(#E4E0D6 25%,#fff 0 50%,#E4E0D6 0 75%,#fff 0);
+background-size:22px 22px}
+.pie-img{font-family:'Space Mono',monospace;font-size:12px;margin-top:6px}
+.img.malo img{outline:5px solid var(--rojo);outline-offset:-5px}
+.img .fallo{color:var(--rojo);font-weight:700;font-size:14px;margin-top:4px;font-family:'Fraunces',Georgia,serif}
+.sub{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+margin-top:20px;color:var(--tomate)}
+details{margin-top:14px;border-top:1px solid var(--linea);padding-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:16px;min-height:28px}
+.texto{white-space:pre-wrap;word-wrap:break-word;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+font-size:15px;line-height:1.5;margin-top:10px;background:#fff;border-radius:12px;padding:14px;border:1px solid var(--linea)}
+.copiar{appearance:none;margin-top:10px;border:2px solid var(--marino);background:transparent;color:var(--marino);
+border-radius:10px;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;padding:10px 14px;min-height:44px;
+cursor:pointer}
+.pie{margin-top:36px;background:var(--marino);color:var(--crema);border-radius:22px;padding:22px 20px}
+.pie p{margin-top:8px;font-size:15px}
+.pie a{color:var(--crema)}
+.pie .firma{font-weight:650;font-size:22px;margin-top:10px}
+@media (max-width:420px){.img{width:84%}.img.alta{width:64%}}
+</style>
+</head>
+<body data-listo="no">
+@@CUERPO@@
+<pre id="salida" hidden></pre>
+<script type="application/json" id="pedido">@@PEDIDO@@</script>
+<script>
+(function () {
+"use strict";
+
+// Lo que el motor de la Lámina necesita tener definido.
+var estado = { nombre: "", usuario: "", verificado: false, formato: "feed", fondo: "blanco", colorFondo: "#FFFFFF",
+  colorTexto: "#0F1419", letra: "sans", numerar: false, zoom: 1, moverX: 0, moverY: 0 };
+var fotoImg = null;
+
+@@MOTOR@@
+
+// ---------- Para llevar ----------
+var P = JSON.parse(document.getElementById("pedido").textContent);
+var AUTO = location.hash === "#auto";
+estado.nombre = P.para;
+estado.usuario = P.usuario;
+estado.verificado = !!P.marca.verificado;
+estado.fondo = P.marca.fondo;
+estado.colorFondo = P.marca.colorFondo;
+estado.colorTexto = P.marca.colorTexto;
+estado.letra = P.marca.letra;
+
+// Si el nombre o la cuenta no caben en la cabecera, el motor los corta con «...»: que se sepa.
+var cortados = [];
+var recortarDelMotor = recortar;
+recortar = function (ctx, t, ancho) {
+  var r = recortarDelMotor(ctx, t, ancho);
+  if (r !== t && cortados.indexOf(t) < 0) cortados.push(t);
+  return r;
+};
+
+// Una palabra más ancha que la línea se partiría por letras: eso no se entrega.
+function palabraPartida(ctx, texto, ancho) {
+  // Igual que partirLineas: las palabras se separan por espacios y por saltos de línea, nada más.
+  return limpiarParaDibujar(texto).split(/[ \n]+/).some(function (p) { return p && ctx.measureText(p).width > ancho; });
+}
+
+// Tres cambios sobre el motor de la Lámina, solo aquí:
+// 1. La letra: la más grande con la que el texto cabe entero y sin partir ninguna palabra. Si no hay ninguna,
+//    lo de la Lámina, y la imagen sale marcada.
+var ajustarDelMotor = ajustar;
+ajustar = function (ctx, texto, fuente, ancho, altoMax, f) {
+  var lo = f.min, hi = f.max, mejor = null;
+  while (lo <= hi) {
+    var mid = Math.floor((lo + hi) / 2);
+    ctx.font = "400 " + mid + "px " + fuente;
+    var lineas = partirLineas(ctx, texto, ancho);
+    if (altoTexto(lineas, mid) <= altoMax && !palabraPartida(ctx, texto, ancho)) { mejor = { tam: mid, lineas: lineas }; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  if (mejor) return { tam: mejor.tam, lineas: mejor.lineas, noCabe: false };
+  return ajustarDelMotor(ctx, texto, fuente, ancho, altoMax, f);
+};
+// 2. El gris de la cuenta y de los números, el que ha calculado el script para que se lea en el móvil.
+var temaDelMotor = temaActual;
+temaActual = function () {
+  var tema = temaDelMotor();
+  if (estado.fondo === "propio" && P.marca.gris) tema.sub = P.marca.gris;
+  return tema;
+};
+// 3. Las iniciales: solo letras o cifras (un emoji al principio del nombre no se parte en dos).
+var LETRA = null;
+try { LETRA = new RegExp("[\\p{L}\\p{N}]", "u"); } catch (e) { LETRA = null; }
+var inicialesDelMotor = iniciales;
+iniciales = function (nombre) {
+  if (!LETRA) return inicialesDelMotor(nombre);
+  var p = nombre.trim().split(/\s+/).map(function (w) { var m = w.match(LETRA); return m ? m[0] : ""; }).filter(Boolean);
+  return ((p[0] || "?") + (p.length > 1 ? p[p.length - 1] : "")).toUpperCase();
+};
+
+function dibujarLamina(canvas, img) {
+  estado.formato = img.formato;
+  estado.numerar = !!img.numerar;
+  var m = dibujar(canvas, img.texto, img.indice, img.total);
+  var f = FORMATOS[estado.formato], ctx = canvas.getContext("2d");
+  ctx.font = "400 " + m.tam + "px " + (LETRAS[estado.letra] || LETRAS.sans);
+  return { tam: m.tam, noCabe: !!m.noCabe, partida: palabraPartida(ctx, img.texto, f.W - f.padX * 2) };
+}
+
+// Los textos en pantalla del reel: una caja con los colores de la marca, sobre fondo transparente.
+// La caja acaba en 1340 de 1920, por encima de donde Instagram pone el texto y los botones del reel.
+var CARTEL = { W: 1080, H: 1920, abajo: 1340, anchoMax: 920, padX: 44, padY: 30, altoMax: 330, min: 40, max: 76 };
+function caja(ctx, x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+function dibujarCartel(canvas, textoBruto) {
+  var C = CARTEL, tema = temaActual(), fuente = LETRAS[estado.letra] || LETRAS.sans;
+  var texto = limpiarParaDibujar(textoBruto).trim(), ancho = C.anchoMax - C.padX * 2;
+  canvas.width = C.W; canvas.height = C.H;
+  var ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, C.W, C.H);
+  var lo = C.min, hi = C.max, mejor = null;
+  while (lo <= hi) {
+    var mid = Math.floor((lo + hi) / 2);
+    ctx.font = "700 " + mid + "px " + fuente;
+    var lineas = partirLineas(ctx, texto, ancho);
+    if (altoTexto(lineas, mid) <= C.altoMax && !palabraPartida(ctx, texto, ancho)) { mejor = { tam: mid, lineas: lineas }; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  var noCabe = !mejor;
+  if (!mejor) { ctx.font = "700 " + C.min + "px " + fuente; mejor = { tam: C.min, lineas: partirLineas(ctx, texto, ancho) }; }
+  ctx.font = "700 " + mejor.tam + "px " + fuente;
+  var anchoReal = 0;
+  mejor.lineas.forEach(function (l) { if (l !== null) anchoReal = Math.max(anchoReal, ctx.measureText(l).width); });
+  var w = Math.ceil(anchoReal) + C.padX * 2, h = Math.ceil(altoTexto(mejor.lineas, mejor.tam)) + C.padY * 2;
+  var x = Math.round((C.W - w) / 2), y = C.abajo - h;
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.28)"; ctx.shadowBlur = 34; ctx.shadowOffsetY = 10;
+  ctx.fillStyle = tema.fondo; caja(ctx, x, y, w, h, 22); ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = tema.texto; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  var yy = y + C.padY;
+  mejor.lineas.forEach(function (l) {
+    if (l === null) { yy += mejor.tam * 0.6; return; }
+    ctx.fillText(l, C.W / 2, yy + mejor.tam * 1.02);
+    yy += mejor.tam * 1.36;
+  });
+  ctx.textAlign = "left";
+  return { tam: mejor.tam, noCabe: noCabe || y < 0, partida: palabraPartida(ctx, texto, ancho) };
+}
+
+function hazLasImagenes() {
+  var canvas = document.createElement("canvas");   // uno solo para todas: el móvil va justo de memoria
+  return P.imagenes.map(function (img) {
+    var r = img.clase === "cartel" ? dibujarCartel(canvas, img.texto) : dibujarLamina(canvas, img);
+    var datos = img.clase === "cartel" ? canvas.toDataURL("image/png") : canvas.toDataURL("image/jpeg", 0.92);
+    return { ruta: img.ruta, ancho: canvas.width, alto: canvas.height, tam: r.tam, noCabe: r.noCabe,
+      partida: r.partida, datos: datos };
+  });
+}
+
+function $(id) { return document.getElementById(id); }
+function avisar(texto, mal) { var e = $("estado"); e.textContent = texto; e.className = mal ? "estado mal" : "estado"; }
+
+// Los nombres de dentro del .zip, en orden: los mismos que pone el script (lo comprueba al medir).
+function nombresDelZip(hechas) {
+  return P.archivos.map(function (a) { return P.carpeta + "/" + a.ruta; })
+    .concat(hechas.map(function (h) { return P.carpeta + "/" + h.ruta; }));
+}
+function bytes(dataUrl) {
+  var b = atob(dataUrl.split(",")[1]), a = new Uint8Array(b.length);
+  for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i);
+  return a;
+}
+function soltar(blob, nombre) {
+  var url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+}
+
+var terminado = false;
+function muestra(hechas, fotoMal) {
+  terminado = true;
+  var malas = 0;
+  hechas.forEach(function (h, n) {
+    var fig = $("img-" + n);
+    if (!fig) return;
+    fig.querySelector("img").src = h.datos;
+    if (h.noCabe || h.partida) {
+      malas++;
+      fig.classList.add("malo");
+      var p = document.createElement("p");
+      p.className = "fallo";
+      p.textContent = h.noCabe ? "No cabe: hay que acortar este texto o partirlo en dos." :
+        "Hay una palabra demasiado larga: se partiría por letras.";
+      fig.appendChild(p);
+    }
+  });
+  var boton = $("bajar");
+  if (malas) {
+    boton.textContent = "No se puede descargar todavía";
+    avisar(malas === 1 ? "Una imagen no está bien (en rojo). Pide que te corrijan ese texto." :
+      malas + " imágenes no están bien (en rojo). Pide que te corrijan esos textos.", true);
+    return;
+  }
+  var extra = (P.notas || []).slice();
+  if (cortados.length) extra.push("El nombre o la cuenta no caben enteros en la cabecera y salen cortados con «...».");
+  if (fotoMal) extra.push("No he podido abrir la foto: van las iniciales.");
+  boton.disabled = false;
+  boton.textContent = "Descargar todo (.zip)";
+  avisar(("Listo: " + hechas.length + (hechas.length === 1 ? " imagen" : " imágenes") +
+    " y los textos, en un .zip. " + extra.join(" ")).trim(), false);
+  boton.addEventListener("click", function () {
+    var enc = new TextEncoder(), nombres = nombresDelZip(hechas);
+    var datos = P.archivos.map(function (a) { return enc.encode(a.texto); })
+      .concat(hechas.map(function (h) { return bytes(h.datos); }));
+    soltar(crearZip(nombres.map(function (n, i) { return { nombre: n, datos: datos[i] }; })), P.carpeta + ".zip");
+    avisar("Descargado: " + P.carpeta + ".zip. Descomprímelo y sube cada carpeta el día que toca.", false);
+  });
+}
+
+function copiar() {
+  Array.prototype.forEach.call(document.querySelectorAll("button.copiar"), function (b) {
+    var original = b.textContent;
+    b.addEventListener("click", function () {
+      var nodo = $(b.getAttribute("data-de"));
+      var hecho = function () { b.textContent = "Copiado"; setTimeout(function () { b.textContent = original; }, 1800); };
+      var selecciona = function () {
+        var r = document.createRange(); r.selectNodeContents(nodo);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        b.textContent = "Seleccionado: cópialo";
+      };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(nodo.textContent).then(hecho, selecciona);
+        else selecciona();
+      } catch (e) { selecciona(); }
+    });
+  });
+}
+
+function arranca(fotoMal) {
+  var hechas;
+  try {
+    hechas = hazLasImagenes();
+  } catch (e) {
+    if (AUTO) {
+      $("salida").textContent = JSON.stringify({ error: String(e && e.message || e) });
+      document.body.setAttribute("data-listo", "si");
+    } else {
+      terminado = true;
+      avisar("No he podido dibujar las imágenes en este navegador. Prueba con Chrome, Safari o Edge actualizados.", true);
+    }
+    return;
+  }
+  if (AUTO) {
+    $("salida").textContent = JSON.stringify({ imagenes: hechas, cortados: cortados, fotoMal: !!fotoMal,
+      nombres: nombresDelZip(hechas) });
+    document.body.setAttribute("data-listo", "si");
+    return;
+  }
+  muestra(hechas, fotoMal);
+}
+
+if (!AUTO) {
+  copiar();
+  setTimeout(function () {
+    if (!terminado) avisar("Si no ves las imágenes, abre esta página con Chrome, Safari o Edge (no con la vista previa de WhatsApp o de Archivos).", true);
+  }, 8000);
+}
+if (P.hechas && !AUTO) {
+  // Las imágenes ya están hechas y medidas: las mismas que van en el .zip.
+  muestra(P.hechas.map(function (h) { return { ruta: h.ruta, datos: h.datos, noCabe: false, partida: false }; }), false);
+} else if (P.marca.foto) {
+  var foto = new Image();
+  foto.onload = function () { fotoImg = foto; arranca(false); };
+  foto.onerror = function () { arranca(true); };
+  foto.src = P.marca.foto;
+} else {
+  arranca(false);
+}
+})();
+</script>
+</body>
+</html>

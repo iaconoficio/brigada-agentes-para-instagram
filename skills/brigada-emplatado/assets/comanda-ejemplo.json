@@ -1,0 +1,121 @@
+{
+  "titulo": "Tu semana del 16 de noviembre",
+  "para": "Calefacción Olmo",
+  "cuenta": "@calefaccion.olmo",
+  "fecha": "Ejemplo inventado",
+  "marca": {
+    "fondo": "#EEF3F6",
+    "texto": "#15314B",
+    "acento": "#C2531F",
+    "suave": "#FFFFFF"
+  },
+  "paginas": [
+    {
+      "tipo": "portada",
+      "antetitulo": "Plan de la semana",
+      "titulo": "Tu semana del 16 de noviembre",
+      "subtitulo": "Una duda de tus clientes, contada en tres piezas. Las revisas, tocas lo que no te convenza y publicas tú.",
+      "piezas": [
+        {"dia": "martes", "formato": "Reel"},
+        {"dia": "jueves", "formato": "Carrusel"},
+        {"dia": "sábado", "formato": "Post"}
+      ]
+    },
+    {
+      "tipo": "semana",
+      "antetitulo": "La semana en una mirada",
+      "titulo": "Tres piezas, una sola duda",
+      "filas": [
+        {"dia": "martes", "hora": "19:00", "formato": "Reel", "tema": "¿Por qué hace glu-glu el radiador?"},
+        {"dia": "jueves", "hora": "19:00", "formato": "Carrusel", "tema": "Purgar un radiador en seis pasos"},
+        {"dia": "sábado", "hora": "11:00", "formato": "Post", "tema": "Lo que miro en una revisión de caldera"}
+      ],
+      "nota": "Las horas salen de tus estadísticas. Esta semana toca enseñar; vender, otra semana."
+    },
+    {
+      "tipo": "idea",
+      "oscura": true,
+      "antetitulo": "La duda de la semana",
+      "titulo": "«Tengo los radiadores fríos por arriba. ¿Se me ha roto la caldera?»",
+      "texto": "Casi siempre es aire, y se saca en un rato. Esta semana se lo enseñas a tus clientes antes de que te llamen."
+    },
+    {
+      "tipo": "guion",
+      "antetitulo": "Martes · Reel",
+      "titulo": "El guion, plano a plano",
+      "planos": [
+        {"cartel": "¿Glu-glu?", "dices": "¿Tu radiador hace glu-glu y está frío por arriba?", "se_ve": "La mano tocando el radiador por arriba"},
+        {"cartel": "Es aire", "dices": "Casi siempre es aire. Y lo puedes sacar tú.", "se_ve": "Primer plano del purgador"},
+        {"cartel": "Apaga y espera", "dices": "Apaga la calefacción y espera: el agua de dentro quema.", "se_ve": "El termostato apagándose"},
+        {"cartel": "Un cuarto de vuelta", "dices": "Trapo debajo del purgador y un cuarto de vuelta.", "se_ve": "El trapo y la moneda en el purgador"},
+        {"cartel": "Sin burbujas, cierra", "dices": "Cuando salga agua sin burbujas, cierras.", "se_ve": "Gotas de agua en el trapo"},
+        {"cartel": "Mira la presión", "dices": "Y al final, mira la presión de la caldera.", "se_ve": "La aguja del manómetro"}
+      ],
+      "nota": "Los recuadros son los textos en pantalla. Lo que no te suene a ti se cambia antes de grabar."
+    },
+    {
+      "tipo": "cifras",
+      "antetitulo": "Martes · Reel",
+      "titulo": "Lo que dura",
+      "cifras": [
+        {"numero": "19", "texto": "segundos, más o menos"},
+        {"numero": "6", "texto": "planos"},
+        {"numero": "6", "texto": "textos en pantalla"}
+      ],
+      "nota": "La duración sale del cronómetro de brigada-reel, a 165 palabras por minuto. Cronométralo tú al grabar."
+    },
+    {
+      "tipo": "texto",
+      "antetitulo": "Martes · Reel",
+      "titulo": "El texto del post",
+      "imagen": "La portada del reel",
+      "texto": "Si tu radiador está frío por arriba, esto es para ti.\n\nCasi siempre es aire. Y sacarlo es cosa de diez minutos, una moneda y un trapo.\n\nEn el vídeo te enseño los pasos. El último es el que más se olvida: mirar la presión de la caldera.\n\n¿Los tuyos se abren con moneda o con llave?\n\n#calefaccion #radiadores #caldera #mantenimiento #hogar",
+      "notas": [
+        "La primera línea dice para quién es.",
+        "Acaba con una pregunta, sin vender.",
+        "Los hashtags son orientativos: deja solo los que usarías."
+      ]
+    },
+    {
+      "tipo": "laminas",
+      "antetitulo": "Jueves · Carrusel",
+      "titulo": "Las láminas",
+      "laminas": [
+        "¿Radiador frío por arriba? Casi siempre es aire, no la caldera.\n\nLo puedes sacar tú, con un trapo y poco más.",
+        "El aire se queda arriba y no deja que el agua caliente llene el radiador.\n\nPor eso suena a glu-glu y la casa tarda más en calentarse.",
+        "1. Apaga la calefacción\n\nEspera a que los radiadores se enfríen. El agua de dentro quema.",
+        "2. Busca el purgador\n\nUna válvula pequeña en una esquina de arriba. Se abre con una moneda, un destornillador plano o una llave de purgar.",
+        "3. Trapo debajo y un cuarto de vuelta\n\nPrimero sale el aire. Cuando salga agua sin burbujas, ciérralo.",
+        "4. Repite en cada radiador\n\nUno a uno, con calma.",
+        "5. Mira la presión de la caldera\n\nAl purgar, la presión baja. Si ha bajado, rellena poco a poco.",
+        "6. Vuelve a encender\n\nAl rato, toca cada radiador por arriba. Si alguno sigue frío, cuéntamelo.",
+        "Los seis pasos, juntos:\n\nApaga y espera · Busca el purgador · Un cuarto de vuelta · Repite · Mira la presión · Enciende y comprueba",
+        "¿Los tuyos se abren con moneda o con llave?"
+      ],
+      "nota": "La portada saca 77 de 100 con el puntuador de ganchos. Las imágenes, con la Lámina de texto."
+    },
+    {
+      "tipo": "lista",
+      "antetitulo": "Antes de publicar",
+      "titulo": "Cinco minutos de repaso",
+      "items": [
+        "Lee cada texto en voz alta: lo que no te suene a ti, fuera.",
+        "Pon la portada del reel antes de publicarlo.",
+        "Mira la hora: martes y jueves a las 19:00, sábado a las 11:00.",
+        "Contesta los comentarios que lleguen ese día."
+      ]
+    },
+    {
+      "tipo": "tabla",
+      "antetitulo": "A las 48 horas",
+      "titulo": "El repaso",
+      "columnas": ["Pieza", "Visualizaciones", "Guardados", "Comentarios"],
+      "filas": [
+        ["Reel · martes", "", "", ""],
+        ["Carrusel · jueves", "", "", ""],
+        ["Post · sábado", "", "", ""]
+      ],
+      "nota": "Rellénala dos días después de publicar. Mide cada pieza contra las tuyas de antes, no contra las de otros."
+    }
+  ]
+}

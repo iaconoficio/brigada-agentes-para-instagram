@@ -1,0 +1,13 @@
+{
+  "name": "brigada",
+  "description": "La Brigada: agentes de IA para Instagram, en español. Te preparan la semana con tu voz (reels, textos y carruseles) y te la dejan lista para subir, con las imágenes hechas. Puntuadores hechos para el español. Tú apruebas y publicas.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Toni Mont (IA con Oficio)",
+    "url": "https://tonimont.com"
+  },
+  "homepage": "https://github.com/iaconoficio/brigada-agentes-para-instagram",
+  "repository": "https://github.com/iaconoficio/brigada-agentes-para-instagram",
+  "license": "MIT",
+  "keywords": ["instagram", "reels", "español", "spanish", "contenido", "agentes", "claude-skills", "marketing"]
+}

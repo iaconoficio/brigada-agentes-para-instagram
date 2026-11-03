@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lámina de texto</title>
+<meta name="description" content="Convierte tus textos en posts tipo tweet para Instagram. Funciona sin internet: tu foto y tus textos no salen de tu ordenador. Parte de La Brigada, de IA con Oficio.">
+<style>
+/* Mesa de trabajo: panel de ajustes a la izquierda, láminas a la derecha; en el móvil, una columna. */
+:root {
+  --fondo: #F5ECD6;
+  --papel: #FBF6EA;
+  --tinta: #1C2541;
+  --tinta-suave: #4A5373;
+  --linea: rgba(28, 37, 65, .18);
+  --acento: #E0442A;
+  --acento-tinta: #FFFFFF;
+  --bien: #2E6B4E;
+  --aviso: #8A5A00;
+  --mal: #B3261E;
+  --chip-bien: rgba(46, 107, 78, .12);
+  --chip-aviso: rgba(138, 90, 0, .12);
+  --chip-mal: rgba(179, 38, 30, .12);
+  --f-titulo: "Fraunces", Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --f-texto: "Fraunces", Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --f-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-etiqueta: "Space Mono", ui-monospace, Menlo, Consolas, "Courier New", monospace;
+  --f-numero: "Archivo Black", "Arial Black", Impact, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #121829; --papel: #1C2541; --tinta: #F5ECD6; --tinta-suave: #BDB6A4;
+    --linea: rgba(245, 236, 214, .16); --acento: #F0694F; --acento-tinta: #121829;
+    --bien: #7CC4A0; --aviso: #E8B656; --mal: #F28B82;
+    --chip-bien: rgba(124, 196, 160, .14); --chip-aviso: rgba(232, 182, 86, .14); --chip-mal: rgba(242, 139, 130, .14);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #121829; --papel: #1C2541; --tinta: #F5ECD6; --tinta-suave: #BDB6A4;
+  --linea: rgba(245, 236, 214, .16); --acento: #F0694F; --acento-tinta: #121829;
+  --bien: #7CC4A0; --aviso: #E8B656; --mal: #F28B82;
+  --chip-bien: rgba(124, 196, 160, .14); --chip-aviso: rgba(232, 182, 86, .14); --chip-mal: rgba(242, 139, 130, .14);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--fondo); color: var(--tinta);
+  font: 16px/1.5 var(--f-texto);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(32px, env(safe-area-inset-bottom, 0px));
+}
+.marco { max-width: 1240px; margin: 0 auto; display: grid; gap: 28px; }
+.etiqueta { font: 700 12px/1.3 var(--f-etiqueta); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-suave); }
+header.cabecera { display: grid; gap: 10px; padding-block: 8px 4px; border-bottom: 1px solid var(--linea); padding-bottom: 22px; }
+h1 { font: 600 clamp(36px, 6vw, 60px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+h1 em { font-style: italic; color: var(--acento); }
+.entrada { max-width: 62ch; margin: 0; font-size: 18px; }
+.privado { margin: 0; font: 14px/1.4 var(--f-ui); color: var(--tinta-suave); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.privado b { color: var(--tinta); font-weight: 600; }
+
+.mesa { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 860px) { .mesa { grid-template-columns: minmax(0, 1fr); } }
+
+.panel { display: grid; gap: 22px; position: sticky; top: max(12px, env(safe-area-inset-top, 0px)); }
+@media (max-width: 860px) { .panel { position: static; } }
+fieldset { margin: 0; padding: 0; border: 0; display: grid; gap: 12px; min-width: 0; }
+legend { padding: 0; margin-bottom: 4px; display: flex; gap: 10px; align-items: baseline; }
+legend .num { font: 20px/1 var(--f-numero); color: var(--acento); }
+legend .titulo { font: 600 20px/1.2 var(--f-titulo); }
+.campo { display: grid; gap: 5px; min-width: 0; }
+.campo > label, .campo > .rotulo { font: 600 14px/1.3 var(--f-ui); }
+.ayuda { font: 13px/1.4 var(--f-ui); color: var(--tinta-suave); margin: 0; }
+input[type="text"], textarea, select {
+  width: 100%; font: 16px/1.45 var(--f-ui); color: var(--tinta); background: var(--papel);
+  border: 1px solid var(--linea); border-radius: 6px; padding: 10px 12px;
+}
+textarea { min-height: 280px; resize: vertical; font-size: 15px; }
+.arroba { display: flex; align-items: stretch; }
+.arroba span { display: grid; place-items: center; padding: 0 10px; border: 1px solid var(--linea); border-right: 0; border-radius: 6px 0 0 6px; background: var(--fondo); font: 16px var(--f-ui); color: var(--tinta-suave); }
+.arroba input { border-radius: 0 6px 6px 0; }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips label { position: relative; }
+.chips input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.chips span {
+  display: inline-block; padding: 7px 12px; border: 1px solid var(--linea); border-radius: 999px;
+  font: 14px/1.2 var(--f-ui); background: var(--papel); cursor: pointer;
+}
+.chips span small { color: var(--tinta-suave); font-size: 12px; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.chips input:checked + span { background: var(--tinta); color: var(--fondo); border-color: var(--tinta); }
+.chips input:checked + span small { color: var(--fondo); opacity: .75; }
+.chips input:focus-visible + span { outline: 3px solid var(--acento); outline-offset: 2px; }
+.casilla { display: flex; gap: 10px; align-items: flex-start; font: 15px/1.35 var(--f-ui); }
+.casilla input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--acento); flex: none; }
+.foto { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px; border: 1px dashed var(--linea); border-radius: 8px; background: var(--papel); }
+.foto.encima { border-color: var(--acento); }
+.foto canvas { width: 64px; height: 64px; border-radius: 50%; }
+.foto .acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+.deslizadores { display: grid; gap: 6px; }
+.deslizadores label { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 8px; align-items: center; font: 13px var(--f-ui); color: var(--tinta-suave); }
+input[type="range"] { width: 100%; accent-color: var(--acento); }
+input[type="color"] { width: 100%; height: 40px; padding: 2px; border: 1px solid var(--linea); border-radius: 6px; background: var(--papel); }
+
+button {
+  font: 600 15px/1.2 var(--f-ui); border-radius: 6px; padding: 10px 14px; cursor: pointer;
+  border: 1px solid var(--tinta); background: transparent; color: var(--tinta);
+}
+button:hover { background: var(--papel); }
+button.principal { background: var(--acento); border-color: var(--acento); color: var(--acento-tinta); }
+button.principal:hover { filter: brightness(1.05); background: var(--acento); }
+button.discreto { border-color: var(--linea); font-weight: 500; font-size: 14px; padding: 8px 12px; }
+button:disabled { opacity: .5; cursor: progress; }
+.botonera { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.estado { font: 14px/1.4 var(--f-ui); color: var(--tinta-suave); min-height: 1.4em; margin: 0; }
+
+.laminas-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.laminas-cab h2 { margin: 0; font: 600 24px/1.2 var(--f-titulo); }
+.cuenta { font: 22px/1 var(--f-numero); color: var(--acento); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 22px; }
+.lamina { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.lamina canvas { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 1px 0 var(--linea), 0 10px 30px -18px rgba(0, 0, 0, .45); background: #fff; }
+.lamina .datos { display: flex; justify-content: space-between; gap: 8px; font: 13px/1.3 var(--f-etiqueta); color: var(--tinta-suave); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+.avisos { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.avisos li { font: 13.5px/1.4 var(--f-ui); padding: 7px 10px; border-radius: 6px; border-left: 3px solid; }
+.avisos li.bien { background: var(--chip-bien); border-color: var(--bien); }
+.avisos li.aviso { background: var(--chip-aviso); border-color: var(--aviso); }
+.avisos li.mal { background: var(--chip-mal); border-color: var(--mal); }
+.avisos li b { font-weight: 700; }
+.vacio { padding: 40px 20px; text-align: center; border: 1px dashed var(--linea); border-radius: 8px; font: 15px var(--f-ui); color: var(--tinta-suave); }
+
+footer.pie { border-top: 1px solid var(--linea); padding-top: 18px; display: grid; gap: 8px; font: 14px/1.5 var(--f-ui); color: var(--tinta-suave); }
+footer.pie a { color: var(--tinta); }
+footer.pie .firma { font: 600 16px var(--f-titulo); color: var(--tinta); }
+@media (prefers-reduced-motion: no-preference) { button, .chips span { transition: background-color .15s, color .15s; } }
+</style>
+</head>
+<body>
+<div class="marco">
+  <header class="cabecera">
+    <span class="etiqueta">La Brigada · IA con Oficio</span>
+    <h1>Lámina de <em>texto</em></h1>
+    <p class="entrada">Convierte tus textos en posts tipo tweet para Instagram. Escribes, ves cómo queda y descargas la imagen lista para subir.</p>
+    <p class="privado"><b>Funciona sin internet.</b> Tu foto y tus textos no salen de tu ordenador. Lo que escribes se guarda solo en este navegador.</p>
+  </header>
+
+  <main class="mesa">
+    <form class="panel" id="panel" autocomplete="off">
+      <fieldset>
+        <legend><span class="num">1</span><span class="titulo">Tu perfil</span></legend>
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" maxlength="60">
+        </div>
+        <div class="campo">
+          <label for="usuario">Usuario de Instagram</label>
+          <div class="arroba"><span>@</span><input type="text" id="usuario" maxlength="40" spellcheck="false" autocapitalize="off"></div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="foto-rotulo">Foto</span>
+          <div class="foto" id="foto-zona" aria-labelledby="foto-rotulo">
+            <canvas id="foto-mini" width="128" height="128" aria-hidden="true"></canvas>
+            <div class="acciones">
+              <button type="button" class="discreto" id="foto-elegir">Elegir foto</button>
+              <button type="button" class="discreto" id="foto-quitar" hidden>Quitar</button>
+              <p class="ayuda">O arrástrala aquí. Sin foto, salen tus iniciales.</p>
+            </div>
+            <input type="file" id="foto" accept="image/*" hidden>
+          </div>
+          <div class="deslizadores" id="recorte" hidden>
+            <label for="zoom">Acercar <input type="range" id="zoom" min="1" max="3" step="0.01" value="1"></label>
+            <label for="mover-x">Horizontal <input type="range" id="mover-x" min="-1" max="1" step="0.01" value="0"></label>
+            <label for="mover-y">Vertical <input type="range" id="mover-y" min="-1" max="1" step="0.01" value="0"></label>
+          </div>
+        </div>
+        <label class="casilla"><input type="checkbox" id="verificado"> <span>Poner la insignia azul de verificado. <span class="ayuda">Márcala solo si tu cuenta está verificada de verdad.</span></span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">2</span><span class="titulo">Tus textos</span></legend>
+        <div class="campo">
+          <label for="textos">Un post por bloque</label>
+          <textarea id="textos" spellcheck="true"></textarea>
+          <p class="ayuda">Para hacer varios a la vez, sepáralos con una línea que solo tenga tres guiones: <b>---</b>. Deja una línea en blanco entre párrafos para que respire.</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">3</span><span class="titulo">Formato y estilo</span></legend>
+        <div class="campo">
+          <span class="rotulo">Tamaño</span>
+          <div class="chips" role="radiogroup" aria-label="Tamaño">
+            <label><input type="radio" name="formato" value="feed" checked><span>Feed <small>1080×1350</small></span></label>
+            <label><input type="radio" name="formato" value="cuadrado"><span>Cuadrado <small>1080×1080</small></span></label>
+            <label><input type="radio" name="formato" value="story"><span>Story <small>1080×1920</small></span></label>
+          </div>
+        </div>
+        <div class="campo">
+          <span class="rotulo">Fondo</span>
+          <div class="chips" role="radiogroup" aria-label="Fondo">
+            <label><input type="radio" name="fondo" value="blanco" checked><span>Blanco</span></label>
+            <label><input type="radio" name="fondo" value="negro"><span>Negro</span></label>
+            <label><input type="radio" name="fondo" value="propio"><span>Mis colores</span></label>
+          </div>
+          <div class="dos" id="colores" hidden>
+            <div class="campo"><label for="color-fondo">Fondo</label><input type="color" id="color-fondo" value="#F5ECD6"></div>
+            <div class="campo"><label for="color-texto">Letra</label><input type="color" id="color-texto" value="#1C2541"></div>
+          </div>
+        </div>
+        <div class="campo">
+          <span class="rotulo">Letra</span>
+          <div class="chips" role="radiogroup" aria-label="Letra">
+            <label><input type="radio" name="letra" value="sans" checked><span>Como el móvil</span></label>
+            <label><input type="radio" name="letra" value="serif"><span>Con remate</span></label>
+            <label><input type="radio" name="letra" value="mono"><span>Máquina de escribir</span></label>
+          </div>
+        </div>
+        <label class="casilla"><input type="checkbox" id="numerar"> <span>Numerar como carrusel (1/5, 2/5...)</span></label>
+      </fieldset>
+
+      <div class="botonera">
+        <button type="button" class="principal" id="bajar-todas">Descargar todas (.zip)</button>
+        <button type="button" class="discreto" id="olvidar">Olvidar mis datos</button>
+      </div>
+      <p class="estado" id="estado" role="status" aria-live="polite"></p>
+    </form>
+
+    <section aria-labelledby="laminas-titulo">
+      <div class="laminas-cab">
+        <h2 id="laminas-titulo"><span class="cuenta" id="cuenta">0</span><span id="cuenta-texto">láminas</span></h2>
+        <span class="etiqueta" id="aviso-ejemplo">Ejemplo. Cambia el texto y el perfil por los tuyos</span>
+      </div>
+      <div class="rejilla" id="rejilla"></div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <span class="firma">Toni Mont · IA con Oficio</span>
+    <span>Parte de <a href="https://github.com/iaconoficio/brigada-agentes-para-instagram">La Brigada</a>, agentes de IA para Instagram en español. Código abierto con licencia MIT.</span>
+    <span>Comunidad: <a href="https://chat.whatsapp.com/F4LVhDev0ahGSJixjCsLc9">WhatsApp</a> · Instagram: <a href="https://www.instagram.com/soytonimont/">@soytonimont</a> · Web: <a href="https://tonimont.com">tonimont.com</a></span>
+    <span>No está afiliado a Instagram, a Meta ni a X, ni cuenta con su respaldo.</span>
+  </footer>
+</div>
+
+<script type="application/json" id="muletillas">{"version":"1.0","nota":"L\u00e9xico de humaniza.py y detecta.py. Muletillas que delatan un texto escrito por IA en espa\u00f1ol. 'cambiar' es el sustituto; si es null, solo se avisa y no se toca, porque cambiarlo pide criterio. Se buscan sin distinguir tildes ni may\u00fasculas. El \u00faltimo bloque de cada lista es propio de Instagram. Est\u00e1 hecho para editarse: si usas una palabra de verdad y la lista te la quita, b\u00f3rrala de aqu\u00ed.","tipografia":[{"de":" \u2014 ","a":", ","nombre":"raya entre espacios"},{"de":"\u2014","a":", ","nombre":"raya"},{"de":" \u2013 ","a":", ","nombre":"semirraya entre espacios"},{"de":"\u2013","a":"-","nombre":"semirraya"},{"de":"\u2026","a":"...","nombre":"puntos suspensivos de un solo car\u00e1cter"},{"de":"\u201c","a":"\"","nombre":"comilla curva de apertura"},{"de":"\u201d","a":"\"","nombre":"comilla curva de cierre"},{"de":"\u2018","a":"'","nombre":"comilla simple curva de apertura"},{"de":"\u2019","a":"'","nombre":"comilla simple curva de cierre"},{"de":"\u2022","a":"-","nombre":"vi\u00f1eta"},{"de":"\u00a0","a":" ","nombre":"espacio duro"},{"de":"\u202f","a":" ","nombre":"espacio duro estrecho"},{"de":"\u2009","a":" ","nombre":"espacio fino"}],"palabras":[{"buscar":"potenciar","cambiar":"mejorar","familia":"verbos"},{"buscar":"potenciando","cambiar":"mejorando","familia":"verbos"},{"buscar":"potencian","cambiar":"mejoran","familia":"verbos"},{"buscar":"potenciar\u00e1","cambiar":"mejorar\u00e1","familia":"verbos"},{"buscar":"desbloquear","cambiar":"conseguir","familia":"verbos"},{"buscar":"desbloquea","cambiar":"consigue","familia":"verbos"},{"buscar":"desbloqueando","cambiar":"consiguiendo","familia":"verbos"},{"buscar":"optimizar","cambiar":"mejorar","familia":"verbos"},{"buscar":"optimiza","cambiar":"mejora","familia":"verbos"},{"buscar":"optimizando","cambiar":"mejorando","familia":"verbos"},{"buscar":"maximizar","cambiar":null,"familia":"verbos"},{"buscar":"elevar","cambiar":null,"familia":"verbos"},{"buscar":"eleva","cambiar":null,"familia":"verbos"},{"buscar":"explorar","cambiar":"ver","familia":"verbos"},{"buscar":"exploremos","cambiar":"veamos","familia":"verbos"},{"buscar":"exploraremos","cambiar":"veremos","familia":"verbos"},{"buscar":"profundizar","cambiar":null,"familia":"verbos"},{"buscar":"profundicemos","cambiar":null,"familia":"verbos"},{"buscar":"navegar","cambiar":null,"familia":"verbos"},{"buscar":"crucial","cambiar":"importante","familia":"adjetivos"},{"buscar":"cruciales","cambiar":"importantes","familia":"adjetivos"},{"buscar":"revolucionario","cambiar":"nuevo","familia":"adjetivos"},{"buscar":"revolucionaria","cambiar":"nueva","familia":"adjetivos"},{"buscar":"transformador","cambiar":null,"familia":"adjetivos"},{"buscar":"transformadora","cambiar":null,"familia":"adjetivos"},{"buscar":"innovador","cambiar":null,"familia":"adjetivos"},{"buscar":"innovadora","cambiar":null,"familia":"adjetivos"},{"buscar":"hol\u00edstico","cambiar":"completo","familia":"adjetivos"},{"buscar":"hol\u00edstica","cambiar":"completa","familia":"adjetivos"},{"buscar":"robusto","cambiar":"s\u00f3lido","familia":"adjetivos"},{"buscar":"robusta","cambiar":"s\u00f3lida","familia":"adjetivos"},{"buscar":"vertiginoso","cambiar":"r\u00e1pido","familia":"adjetivos"},{"buscar":"vertiginosa","cambiar":"r\u00e1pida","familia":"adjetivos"},{"buscar":"fascinante","cambiar":null,"familia":"adjetivos"},{"buscar":"apasionante","cambiar":null,"familia":"adjetivos"},{"buscar":"sinergia","cambiar":null,"familia":"sustantivos"},{"buscar":"sinergias","cambiar":null,"familia":"sustantivos"},{"buscar":"tapiz","cambiar":null,"familia":"sustantivos"},{"buscar":"asimismo","cambiar":"tambi\u00e9n","familia":"conectores"},{"buscar":"por consiguiente","cambiar":"as\u00ed que","familia":"conectores"},{"buscar":"no obstante","cambiar":"pero","familia":"conectores"}],"frases":[{"buscar":"en el mundo actual","cambiar":"hoy","familia":"aperturas"},{"buscar":"en la era digital","cambiar":"hoy","familia":"aperturas"},{"buscar":"en el panorama actual","cambiar":"hoy","familia":"aperturas"},{"buscar":"en el vertiginoso mundo de","cambiar":"en","familia":"aperturas"},{"buscar":"en un mundo cada vez m\u00e1s","cambiar":null,"familia":"aperturas"},{"buscar":"en un mundo donde","cambiar":null,"familia":"aperturas"},{"buscar":"imagina un mundo","cambiar":null,"familia":"aperturas"},{"buscar":"\u00bfalguna vez te has preguntado","cambiar":null,"familia":"aperturas"},{"buscar":"\u00bfte has preguntado alguna vez","cambiar":null,"familia":"aperturas"},{"buscar":"sum\u00e9rgete en","cambiar":"mira","familia":"aperturas"},{"buscar":"ad\u00e9ntrate en","cambiar":"entra en","familia":"aperturas"},{"buscar":"d\u00e9jame contarte","cambiar":"te cuento","familia":"aperturas"},{"buscar":"sin lugar a dudas,","cambiar":"","familia":"relleno"},{"buscar":"sin lugar a dudas","cambiar":null,"familia":"relleno"},{"buscar":"cabe destacar que","cambiar":"","familia":"relleno"},{"buscar":"es importante destacar que","cambiar":"","familia":"relleno"},{"buscar":"es importante se\u00f1alar que","cambiar":"","familia":"relleno"},{"buscar":"vale la pena mencionar que","cambiar":"","familia":"relleno"},{"buscar":"dicho esto,","cambiar":"","familia":"relleno"},{"buscar":"en este sentido,","cambiar":"","familia":"relleno"},{"buscar":"es por ello que","cambiar":"por eso","familia":"relleno"},{"buscar":"juega un papel crucial","cambiar":"pesa mucho","familia":"relleno"},{"buscar":"juega un papel fundamental","cambiar":"pesa mucho","familia":"relleno"},{"buscar":"desempe\u00f1a un papel","cambiar":null,"familia":"relleno"},{"buscar":"un antes y un despu\u00e9s","cambiar":null,"familia":"relleno"},{"buscar":"al siguiente nivel","cambiar":null,"familia":"relleno"},{"buscar":"a otro nivel","cambiar":null,"familia":"relleno"},{"buscar":"abanico de posibilidades","cambiar":"opciones","familia":"relleno"},{"buscar":"infinitas posibilidades","cambiar":"muchas opciones","familia":"relleno"},{"buscar":"un sinf\u00edn de","cambiar":null,"familia":"relleno"},{"buscar":"una amplia gama de","cambiar":null,"familia":"relleno"},{"buscar":"sin precedentes","cambiar":null,"familia":"relleno"},{"buscar":"de vanguardia","cambiar":null,"familia":"relleno"},{"buscar":"en constante evoluci\u00f3n","cambiar":"que cambia r\u00e1pido","familia":"relleno"},{"buscar":"en definitiva,","cambiar":"","familia":"cierres"},{"buscar":"en resumen,","cambiar":"","familia":"cierres"},{"buscar":"en conclusi\u00f3n,","cambiar":"","familia":"cierres"},{"buscar":"para concluir,","cambiar":"","familia":"cierres"},{"buscar":"\u00a1vamos all\u00e1!","cambiar":"","familia":"cierres"},{"buscar":"\u00a1empecemos!","cambiar":"","familia":"cierres"},{"buscar":"s\u00edgueme para m\u00e1s","cambiar":"","familia":"instagram"},{"buscar":"s\u00edgueme para m\u00e1s contenido","cambiar":"","familia":"instagram"},{"buscar":"s\u00edguenos para m\u00e1s","cambiar":"","familia":"instagram"},{"buscar":"s\u00edguenos para m\u00e1s contenido","cambiar":"","familia":"instagram"},{"buscar":"dale like","cambiar":"","familia":"instagram"},{"buscar":"no olvides darle like","cambiar":"","familia":"instagram"},{"buscar":"etiqueta a alguien que","cambiar":null,"familia":"instagram"},{"buscar":"comparte con alguien que","cambiar":null,"familia":"instagram"},{"buscar":"al algoritmo le encanta","cambiar":null,"familia":"instagram"},{"buscar":"el algoritmo te va a premiar","cambiar":null,"familia":"instagram"},{"buscar":"esto te va a cambiar la vida","cambiar":null,"familia":"instagram"},{"buscar":"te va a volar la cabeza","cambiar":null,"familia":"instagram"},{"buscar":"no te lo puedes perder","cambiar":null,"familia":"instagram"},{"buscar":"deja de hacer scroll","cambiar":null,"familia":"instagram"},{"buscar":"corre, no camines","cambiar":null,"familia":"instagram"},{"buscar":"en el v\u00eddeo de hoy","cambiar":null,"familia":"instagram"},{"buscar":"en este v\u00eddeo te voy a","cambiar":null,"familia":"instagram"}],"estructuras":[{"id":"no-es-solo","regex":"(?i)\\bno es (?:solo|s[o\u00f3]lo|solamente|[u\u00fa]nicamente) [^.!?\\n]{2,60}[,.;:] (?:es|sino)\\b","nombre":"\u00abNo es solo X, es Y\u00bb","arreglo":"Di la \u00fanica cosa que quieres decir. Borra la mitad que prepara."},{"id":"no-se-trata","regex":"(?i)\\bno se trata (?:solo |s[o\u00f3]lo |solamente |[u\u00fa]nicamente )?de [^.!?\\n]{2,80}\\bsino\\b","nombre":"\u00abNo se trata de X, sino de Y\u00bb","arreglo":"Empieza directamente por la Y."},{"id":"no-solo-sino","regex":"(?i)\\bno (?:solo|s[o\u00f3]lo)\\b[^.!?\\n]{2,80}\\bsino (?:tambi[e\u00e9]n)?","nombre":"\u00abNo solo X, sino tambi\u00e9n Y\u00bb","arreglo":"Dos frases cortas o una sola idea."},{"id":"tres-de-golpe","regex":"(?i)\\b[\\w\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1]+, [\\w\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1]+ y [\\w\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1]+\\b","nombre":"Tr\u00edos \u00abX, Y y Z\u00bb","arreglo":"Si hay muchos tr\u00edos, qu\u00e9date con el elemento que importa. Una persona no habla siempre de tres en tres."},{"id":"pregunta-retorica","regex":"(?m)^\\s*\u00bf[^?\\n]{1,25}\\?\\s*$","nombre":"Pregunta ret\u00f3rica suelta (\u00ab\u00bfEl resultado?\u00bb)","arreglo":"Di el resultado sin escenificarlo."},{"id":"preambulo","regex":"(?i)\\b(?:en (?:este|el) (?:v[i\u00ed]deo|reel|post|carrusel)(?: de hoy)? (?:te|os) (?:voy|vamos) a|hoy (?:te|os) traigo)\\b","nombre":"Pre\u00e1mbulo de v\u00eddeo","arreglo":"B\u00f3rralo y empieza por lo que importa."},{"id":"vinetas-emoji","regex":"(?m)^\\s*[\\U0001F300-\\U0001FAFF\\u2600-\\u27BF]\\s","nombre":"Listas con emojis de vi\u00f1eta","arreglo":"Guiones o frases normales."},{"id":"gritos","regex":"\\b(?:[A-Z\u00c1\u00c9\u00cd\u00d3\u00da\u00d1]{2,}\\s+){2,}[A-Z\u00c1\u00c9\u00cd\u00d3\u00da\u00d1]{2,}\\b","nombre":"Tres o m\u00e1s palabras seguidas en may\u00fasculas","arreglo":"Una palabra en may\u00fasculas como mucho."},{"id":"muro-hashtags","regex":"(?:#[\\w\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1]+\\s*){6,}","nombre":"Seis o m\u00e1s hashtags (Instagram admite cinco)","arreglo":"Tres a cinco, relacionados de verdad con el post."},{"id":"cebo","regex":"(?i)\\b(?:s[i\u00ed]gue(?:me|nos) para m[a\u00e1]s|dale (?:a )?(?:like|me gusta)|etiqueta a (?:alguien|un amigo|una amiga)|comparte (?:esto )?con alguien que|doble tap)\\b","nombre":"Cebo de interacci\u00f3n","arreglo":"Pide una sola cosa concreta y \u00fatil, o nada."},{"id":"imagina","regex":"(?im)^\\s*imag[i\u00ed]na(?:te)? (?:que|un|una)\\b","nombre":"Arranque \u00abImagina que\u2026\u00bb","arreglo":"Cuenta el caso real en vez de imaginarlo."},{"id":"cierre-resumen","regex":"(?im)^\\s*(?:en resumen|en conclusi[o\u00f3]n|para concluir|en definitiva)\\b","nombre":"Cierre de redacci\u00f3n escolar","arreglo":"Termina con la acci\u00f3n que quieres, sin resumir."},{"id":"dos-puntos-revelacion","regex":"(?im)^\\s*(?:spoiler|la verdad|la clave|el secreto|el truco)\\s*:","nombre":"Revelaci\u00f3n con dos puntos (\u00abLa clave:\u00bb)","arreglo":"Di la clave sin anunciarla."}]}</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Datos fijos ----------
+  var RAYA = String.fromCharCode(0x2014);
+  var SEMIRRAYA = String.fromCharCode(0x2013);
+  var CLAVE = "lamina-brigada-v1";
+
+  var FORMATOS = {
+    feed:     { W: 1080, H: 1350, padX: 96,  padY: 110, max: 68, min: 30, nombre: "feed" },
+    cuadrado: { W: 1080, H: 1080, padX: 96,  padY: 96,  max: 60, min: 28, nombre: "cuadrado" },
+    story:    { W: 1080, H: 1920, padX: 96,  padY: 260, max: 72, min: 32, nombre: "story" }
+  };
+  var TEMAS = {
+    blanco: { fondo: "#FFFFFF", texto: "#0F1419", sub: "#536471", inicial: "#CFD9DE", inicialTexto: "#0F1419" },
+    negro:  { fondo: "#000000", texto: "#E7E9EA", sub: "#8B98A5", inicial: "#333639", inicialTexto: "#E7E9EA" }
+  };
+  var LETRAS = {
+    sans:  '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+    serif: 'Georgia, "Iowan Old Style", "Times New Roman", serif',
+    mono:  'ui-monospace, Menlo, Consolas, "Courier New", monospace'
+  };
+  var AZUL_VERIFICADO = "#1D9BF0";
+
+  var EJEMPLO = {
+    nombre: "Tu nombre",
+    usuario: "tu_cuenta",
+    textos: [
+      "Yo no te cambio una pieza sin enseñártela rota.\n\nSi no hace falta, no se cambia. Aunque ese día gane menos.\n\nLa confianza no se arregla con una llave inglesa.\n\n¿A ti te enseñan lo que te cambian?",
+      "¿Cada cuánto cambio el aceite?\n\nEs la pregunta que más me hacen en el taller.\n\nMira el manual de tu moto y cuéntame cómo la usas. Con esas dos cosas te digo cuándo toca, sin adivinar.\n\nSi la tienes parada todo el invierno, también cuenta.",
+      "Llevo 22 años de taller " + RAYA + " y cada semana aprendo algo.\n\nLa última vez me lo enseñó un chaval de 19 años con la moto de su abuelo."
+    ].join("\n\n---\n\n")
+  };
+
+  // Lista de muletillas compartida con brigada-humano (se sincroniza con muletillas.json).
+  var MUL = {};
+  try { MUL = JSON.parse(document.getElementById("muletillas").textContent) || {}; } catch (e) { MUL = {}; }
+
+  // ---------- Utilidades ----------
+  function $(id) { return document.getElementById(id); }
+  var MARCAS = new RegExp("[" + String.fromCharCode(0x300) + "-" + String.fromCharCode(0x36F) + "]", "g");
+  function sinTildes(s) { return s.normalize("NFD").replace(MARCAS, "").toLowerCase(); }
+  function escRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* sin almacenamiento: no pasa nada */ } }
+  function leer() { try { var t = localStorage.getItem(CLAVE); return t ? JSON.parse(t) : null; } catch (e) { return null; } }
+  function avisar(t) { $("estado").textContent = t; }
+
+  // Caracteres invisibles que se cuelan al copiar de una IA (se quitan al dibujar).
+  var INVISIBLES = new RegExp("[" + [0x200B, 0x200C, 0x200D, 0x2060, 0xFEFF, 0x00AD].map(function (c) { return String.fromCharCode(c); }).join("") + "]", "g");
+  var ESPACIOS_RAROS = new RegExp("[" + [0x00A0, 0x202F, 0x2009, 0x2007].map(function (c) { return String.fromCharCode(c); }).join("") + "]", "g");
+  function limpiarParaDibujar(t) { return t.replace(/\r\n?/g, "\n").replace(INVISIBLES, "").replace(ESPACIOS_RAROS, " "); }
+
+  // ---------- Comprobaciones ----------
+  var REGLAS_PALABRAS = [];
+  (MUL.palabras || []).concat(MUL.frases || []).forEach(function (m) {
+    if (!m || !m.buscar) return;
+    var b = sinTildes(m.buscar);
+    REGLAS_PALABRAS.push({ buscar: m.buscar, cambiar: m.cambiar, re: new RegExp("(^|[^a-z0-9])" + escRegex(b) + "(?=$|[^a-z0-9])") });
+  });
+  // De las estructuras de brigada-humano, solo las que tienen sentido dentro de una imagen.
+  var ESTRUCTURAS_USADAS = ["no-es-solo", "no-se-trata", "no-solo-sino", "preambulo", "cebo", "imagina", "cierre-resumen", "dos-puntos-revelacion", "gritos"];
+  var REGLAS_ESTRUCTURAS = [];
+  (MUL.estructuras || []).forEach(function (e) {
+    if (ESTRUCTURAS_USADAS.indexOf(e.id) < 0 || !e.regex || /\\U/.test(e.regex)) return;
+    var m = /^\(\?([a-z]+)\)/.exec(e.regex), flags = "u", cuerpo = e.regex;
+    if (m) { cuerpo = e.regex.slice(m[0].length); if (m[1].indexOf("i") >= 0) flags += "i"; if (m[1].indexOf("m") >= 0) flags += "m"; }
+    try { REGLAS_ESTRUCTURAS.push({ nombre: e.nombre, arreglo: e.arreglo, re: new RegExp(cuerpo, flags) }); } catch (err) { /* regla no traducible: se ignora */ }
+  });
+  var VENTA = ["escribeme", "escribidme", "reserva ya", "reserva tu", "reservad", "compra ya", "compralo", "plazas limitadas", "ultimas plazas", "link en bio", "enlace en bio", "enlace en la bio", "apuntate", "oferta", "descuento", "codigo promocional"];
+  var REGLAS_VENTA = VENTA.map(function (v) { return new RegExp("(^|[^a-z0-9])" + escRegex(v) + "(?=$|[^a-z0-9])"); });
+
+  function comprobar(texto, medida) {
+    var avisos = [];
+    var plano = sinTildes(texto);
+    if (medida.noCabe) avisos.push({ nivel: "mal", html: "<b>No cabe</b> ni con la letra más pequeña. Acórtalo o usa el tamaño Story." });
+    if (texto.indexOf(RAYA) >= 0 || texto.indexOf(SEMIRRAYA) >= 0) avisos.push({ nivel: "aviso", html: "<b>Lleva rayas largas.</b> Delatan texto hecho con IA.", arreglo: "rayas" });
+    var primer = texto.trim().split(/\n\s*\n/)[0] || "";
+    var frases = primer.split(/[.!?]+(?:\s|$)/).filter(function (f) { return f.trim().length > 0; });
+    if (frases.length >= 3 || primer.length > 140) avisos.push({ nivel: "aviso", html: "<b>El arranque es largo.</b> La primera frase funciona mejor corta y sola." });
+    var vistas = [];
+    REGLAS_PALABRAS.forEach(function (r) {
+      if (vistas.length < 4 && r.re.test(plano)) vistas.push("«" + r.buscar + "»" + (r.cambiar ? " (mejor «" + r.cambiar + "»)" : ""));
+    });
+    if (vistas.length) avisos.push({ nivel: "aviso", html: "<b>Suena a IA:</b> " + vistas.join(", ") + "." });
+    REGLAS_ESTRUCTURAS.forEach(function (r) {
+      if (r.re.test(texto)) avisos.push({ nivel: "aviso", html: "<b>" + r.nombre + ".</b> " + r.arreglo });
+    });
+    if (REGLAS_VENTA.some(function (re) { return re.test(plano); })) avisos.push({ nivel: "aviso", html: "<b>¿Vendes dentro de la imagen?</b> La venta suele ir mejor en el pie de foto o en stories." });
+    if (texto.length > 600) avisos.push({ nivel: "aviso", html: "<b>Más de 600 caracteres.</b> Cuanto más corto, más grande se lee." });
+    if (!avisos.length) avisos.push({ nivel: "bien", html: "<b>Todo bien.</b> Sin rayas, sin muletillas de IA y cabe holgado." });
+    return avisos;
+  }
+
+  // ---------- Dibujo ----------
+  function partirLineas(ctx, texto, ancho) {
+    var lineas = [];
+    texto.split("\n").forEach(function (parrafo) {
+      if (parrafo.trim() === "") { lineas.push(null); return; }
+      var palabras = parrafo.split(/ +/), actual = "";
+      palabras.forEach(function (p) {
+        var prueba = actual ? actual + " " + p : p;
+        if (ctx.measureText(prueba).width <= ancho) { actual = prueba; return; }
+        if (actual) lineas.push(actual);
+        // Palabra más larga que la línea: se corta por letras.
+        while (ctx.measureText(p).width > ancho && p.length > 1) {
+          var i = p.length;
+          while (i > 1 && ctx.measureText(p.slice(0, i)).width > ancho) i--;
+          lineas.push(p.slice(0, i)); p = p.slice(i);
+        }
+        actual = p;
+      });
+      if (actual) lineas.push(actual);
+    });
+    while (lineas.length && lineas[lineas.length - 1] === null) lineas.pop();
+    while (lineas.length && lineas[0] === null) lineas.shift();
+    // Varias líneas en blanco seguidas cuentan como una.
+    return lineas.filter(function (l, i) { return !(l === null && lineas[i - 1] === null); });
+  }
+  function altoTexto(lineas, tam) {
+    var alto = 0;
+    lineas.forEach(function (l) { alto += l === null ? tam * 0.6 : tam * 1.36; });
+    return alto;
+  }
+  function ajustar(ctx, texto, fuente, ancho, altoMax, f) {
+    // Busca la letra más grande con la que el texto cabe entero.
+    var lo = f.min, hi = f.max, mejor = null;
+    while (lo <= hi) {
+      var mid = Math.floor((lo + hi) / 2);
+      ctx.font = "400 " + mid + "px " + fuente;
+      var lineas = partirLineas(ctx, texto, ancho);
+      if (altoTexto(lineas, mid) <= altoMax) { mejor = { tam: mid, lineas: lineas }; lo = mid + 1; } else { hi = mid - 1; }
+    }
+    if (mejor) return { tam: mejor.tam, lineas: mejor.lineas, noCabe: false };
+    ctx.font = "400 " + f.min + "px " + fuente;
+    return { tam: f.min, lineas: partirLineas(ctx, texto, ancho), noCabe: true };
+  }
+  function recortar(ctx, t, ancho) {
+    if (ctx.measureText(t).width <= ancho) return t;
+    while (t.length > 1 && ctx.measureText(t + "...").width > ancho) t = t.slice(0, -1);
+    return t + "...";
+  }
+  function iniciales(nombre) {
+    var p = nombre.trim().split(/\s+/).filter(Boolean);
+    return ((p[0] || "?")[0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase();
+  }
+  function dibujarAvatar(ctx, cx, cy, d, tema, fuente) {
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.closePath(); ctx.clip();
+    if (fotoImg) {
+      var w = fotoImg.naturalWidth, h = fotoImg.naturalHeight;
+      var s = Math.max(d / w, d / h) * estado.zoom, dw = w * s, dh = h * s;
+      var dx = cx - dw / 2 - estado.moverX * (dw - d) / 2;
+      var dy = cy - dh / 2 - estado.moverY * (dh - d) / 2;
+      ctx.drawImage(fotoImg, dx, dy, dw, dh);
+    } else {
+      ctx.fillStyle = tema.inicial; ctx.fillRect(cx - d / 2, cy - d / 2, d, d);
+      ctx.fillStyle = tema.inicialTexto; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = "700 " + Math.round(d * 0.38) + "px " + fuente;
+      ctx.fillText(iniciales(estado.nombre || "?"), cx, cy + 2);
+      ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    }
+    ctx.restore();
+  }
+  function dibujarVerificado(ctx, x, y, r) {
+    ctx.save();
+    ctx.fillStyle = AZUL_VERIFICADO; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = r * 0.2; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(x - r * 0.42, y + r * 0.02); ctx.lineTo(x - r * 0.1, y + r * 0.34); ctx.lineTo(x + r * 0.46, y - r * 0.3); ctx.stroke();
+    ctx.restore();
+  }
+  function temaActual() {
+    if (estado.fondo === "propio") {
+      var sub = mezclar(estado.colorTexto, estado.colorFondo, 0.62);
+      return { fondo: estado.colorFondo, texto: estado.colorTexto, sub: sub, inicial: mezclar(estado.colorTexto, estado.colorFondo, 0.18), inicialTexto: estado.colorTexto };
+    }
+    return TEMAS[estado.fondo] || TEMAS.blanco;
+  }
+  function mezclar(a, b, t) {
+    function rgb(h) { h = h.replace("#", ""); return [0, 2, 4].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+    var x = rgb(a), y = rgb(b);
+    return "rgb(" + x.map(function (v, i) { return Math.round(v * t + y[i] * (1 - t)); }).join(",") + ")";
+  }
+  function dibujar(canvas, textoBruto, indice, total) {
+    var f = FORMATOS[estado.formato] || FORMATOS.feed, tema = temaActual(), fuente = LETRAS[estado.letra] || LETRAS.sans;
+    var texto = limpiarParaDibujar(textoBruto);
+    canvas.width = f.W; canvas.height = f.H;
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = tema.fondo; ctx.fillRect(0, 0, f.W, f.H);
+
+    var d = 120, cabecera = d, hueco = 46, pieAlto = estado.numerar && total > 1 ? 60 : 0;
+    var ancho = f.W - f.padX * 2;
+    var altoMax = f.H - f.padY * 2 - cabecera - hueco - pieAlto;
+    var m = ajustar(ctx, texto, fuente, ancho, altoMax, f);
+    var bloque = cabecera + hueco + altoTexto(m.lineas, m.tam);
+    var y0 = Math.max(f.padY, Math.round((f.H - pieAlto - bloque) / 2));
+
+    // Cabecera: foto, nombre, verificado y usuario.
+    var cx = f.padX + d / 2, cy = y0 + d / 2;
+    dibujarAvatar(ctx, cx, cy, d, tema, fuente);
+    var nx = f.padX + d + 28, maxNombre = ancho - d - 28 - (estado.verificado ? 52 : 0);
+    ctx.fillStyle = tema.texto; ctx.textBaseline = "alphabetic"; ctx.font = "700 38px " + fuente;
+    var nombre = recortar(ctx, (estado.nombre || "").trim() || "Tu nombre", maxNombre);
+    ctx.fillText(nombre, nx, cy - 6);
+    if (estado.verificado) dibujarVerificado(ctx, nx + ctx.measureText(nombre).width + 26, cy - 19, 17);
+    ctx.fillStyle = tema.sub; ctx.font = "400 31px " + fuente;
+    var usuario = (estado.usuario || "").trim().replace(/^@+/, "");
+    ctx.fillText(recortar(ctx, "@" + (usuario || "tu_cuenta"), ancho - d - 28), nx, cy + 38);
+
+    // Cuerpo del texto.
+    ctx.fillStyle = tema.texto; ctx.font = "400 " + m.tam + "px " + fuente;
+    var y = y0 + cabecera + hueco;
+    m.lineas.forEach(function (l) {
+      if (l === null) { y += m.tam * 0.6; return; }
+      ctx.fillText(l, f.padX, y + m.tam * 1.02);
+      y += m.tam * 1.36;
+    });
+
+    if (pieAlto) {
+      ctx.fillStyle = tema.sub; ctx.font = "400 28px " + fuente; ctx.textAlign = "right";
+      ctx.fillText((indice + 1) + "/" + total, f.W - f.padX, f.H - f.padY + 30);
+      ctx.textAlign = "left";
+    }
+    return m;
+  }
+
+  // ---------- Estado ----------
+  var estado = {
+    nombre: EJEMPLO.nombre, usuario: EJEMPLO.usuario, verificado: false, textos: EJEMPLO.textos,
+    formato: "feed", fondo: "blanco", colorFondo: "#F5ECD6", colorTexto: "#1C2541", letra: "sans",
+    numerar: false, foto: null, zoom: 1, moverX: 0, moverY: 0, ejemplo: true
+  };
+  var fotoImg = null;
+  var guardado = leer();
+  if (guardado) Object.keys(estado).forEach(function (k) { if (k in guardado) estado[k] = guardado[k]; });
+
+  function separar(t) {
+    return limpiarParaDibujar(t || "").split(/(?:^|\n)[ \t]*-{3,}[ \t]*(?=\n|$)/).map(function (s) { return s.replace(/^\s*\n|\n\s*$/g, "").trim(); }).filter(Boolean);
+  }
+  function slug(t, i) {
+    var s = sinTildes(t).replace(/[^a-z0-9]+/g, " ").trim().split(" ").slice(0, 5).join("-") || "lamina";
+    return String(i + 1).padStart(2, "0") + "-" + s + ".jpg";
+  }
+
+  // ---------- Interfaz ----------
+  var rejilla = $("rejilla"), tarjetas = [];
+  function pintarTodo() {
+    var posts = separar(estado.textos);
+    $("cuenta").textContent = posts.length;
+    $("cuenta-texto").textContent = posts.length === 1 ? "lámina" : "láminas";
+    $("aviso-ejemplo").hidden = !estado.ejemplo;
+    $("bajar-todas").disabled = posts.length === 0;
+    while (tarjetas.length > posts.length) rejilla.removeChild(tarjetas.pop().nodo);
+    if (!posts.length) {
+      rejilla.innerHTML = '<div class="vacio">Escribe tu primer texto a la izquierda y aquí verás la lámina.</div>';
+      tarjetas = [];
+      return;
+    }
+    var vacio = rejilla.querySelector(".vacio"); if (vacio) vacio.remove();
+    posts.forEach(function (texto, i) {
+      var t = tarjetas[i];
+      if (!t) {
+        var nodo = document.createElement("article"); nodo.className = "lamina";
+        nodo.innerHTML = '<canvas></canvas><div class="datos"><span class="d-num"></span><span class="d-info"></span></div><ul class="avisos"></ul><div class="botonera"><button type="button" class="discreto b-bajar">Descargar JPG</button></div>';
+        rejilla.appendChild(nodo);
+        t = tarjetas[i] = { nodo: nodo, canvas: nodo.querySelector("canvas"), indice: i };
+        nodo.querySelector(".b-bajar").addEventListener("click", function () { bajarUna(t.indice); });
+      }
+      t.indice = i; t.texto = texto;
+      var m = dibujar(t.canvas, texto, i, posts.length);
+      t.canvas.setAttribute("role", "img");
+      t.canvas.setAttribute("aria-label", "Lámina " + (i + 1) + ": " + texto.slice(0, 120));
+      t.nodo.querySelector(".d-num").textContent = "Lámina " + (i + 1);
+      t.nodo.querySelector(".d-info").textContent = texto.length + " caracteres · letra " + m.tam + " px";
+      var ul = t.nodo.querySelector(".avisos"); ul.innerHTML = "";
+      comprobar(texto, m).forEach(function (a) {
+        var li = document.createElement("li"); li.className = a.nivel; li.innerHTML = a.html;
+        if (a.arreglo === "rayas") {
+          var b = document.createElement("button"); b.type = "button"; b.className = "discreto"; b.style.marginLeft = "8px";
+          b.textContent = "Quitar rayas"; b.addEventListener("click", quitarRayas); li.appendChild(b);
+        }
+        ul.appendChild(li);
+      });
+    });
+  }
+  var temporizador = null;
+  function repintar() { clearTimeout(temporizador); temporizador = setTimeout(function () { pintarTodo(); pintarMini(); guardar(); }, 120); }
+
+  function quitarRayas() {
+    var t = estado.textos;
+    (MUL.tipografia || []).forEach(function (r) {
+      if (/raya/.test(r.nombre)) t = t.split(r.de).join(r.a);
+    });
+    t = t.split(RAYA).join(", ").split(SEMIRRAYA).join("-").replace(/ ,/g, ",").replace(/,,/g, ",");
+    estado.textos = t; $("textos").value = t; marcarPropio(); repintar(); avisar("Rayas cambiadas por comas.");
+  }
+  function marcarPropio() { estado.ejemplo = false; }
+
+  function aBlob(canvas) {
+    return new Promise(function (ok, ko) { canvas.toBlob(function (b) { b ? ok(b) : ko(new Error("No se pudo crear la imagen.")); }, "image/jpeg", 0.92); });
+  }
+  function soltar(blob, nombre) {
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function bajarUna(i) {
+    var t = tarjetas[i]; if (!t) return;
+    aBlob(t.canvas).then(function (b) { soltar(b, slug(t.texto, i)); avisar("Descargada la lámina " + (i + 1) + "."); })
+      .catch(function (e) { avisar(e.message); });
+  }
+  function bajarTodas() {
+    var boton = $("bajar-todas"); boton.disabled = true; avisar("Preparando el archivo...");
+    Promise.all(tarjetas.map(function (t, i) {
+      return aBlob(t.canvas).then(function (b) { return b.arrayBuffer(); }).then(function (buf) { return { nombre: slug(t.texto, i), datos: new Uint8Array(buf) }; });
+    })).then(function (archivos) {
+      soltar(new Blob([crearZip(archivos)], { type: "application/zip" }), "laminas-la-brigada.zip");
+      avisar(archivos.length + (archivos.length === 1 ? " lámina descargada" : " láminas descargadas") + " en un .zip.");
+    }).catch(function (e) { avisar(e.message); }).then(function () { boton.disabled = false; });
+  }
+
+  // ZIP sin compresión (las JPG ya van comprimidas). Sin librerías de fuera.
+  var TABLA_CRC = (function () {
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32(d) { var c = 0xFFFFFFFF; for (var i = 0; i < d.length; i++) c = TABLA_CRC[(c ^ d[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function crearZip(archivos) {
+    var ahora = new Date();
+    var hora = (ahora.getHours() << 11) | (ahora.getMinutes() << 5) | (ahora.getSeconds() >> 1);
+    var fecha = ((ahora.getFullYear() - 1980) << 9) | ((ahora.getMonth() + 1) << 5) | ahora.getDate();
+    var enc = new TextEncoder(), partes = [], central = [], offset = 0;
+    archivos.forEach(function (a) {
+      var nombre = enc.encode(a.nombre), crc = crc32(a.datos), tam = a.datos.length;
+      var cab = new DataView(new ArrayBuffer(30));
+      cab.setUint32(0, 0x04034b50, true); cab.setUint16(4, 20, true); cab.setUint16(6, 0x0800, true); cab.setUint16(8, 0, true);
+      cab.setUint16(10, hora, true); cab.setUint16(12, fecha, true); cab.setUint32(14, crc, true);
+      cab.setUint32(18, tam, true); cab.setUint32(22, tam, true); cab.setUint16(26, nombre.length, true); cab.setUint16(28, 0, true);
+      partes.push(new Uint8Array(cab.buffer), nombre, a.datos);
+      var cd = new DataView(new ArrayBuffer(46));
+      cd.setUint32(0, 0x02014b50, true); cd.setUint16(4, 20, true); cd.setUint16(6, 20, true); cd.setUint16(8, 0x0800, true); cd.setUint16(10, 0, true);
+      cd.setUint16(12, hora, true); cd.setUint16(14, fecha, true); cd.setUint32(16, crc, true); cd.setUint32(20, tam, true); cd.setUint32(24, tam, true);
+      cd.setUint16(28, nombre.length, true); cd.setUint16(30, 0, true); cd.setUint16(32, 0, true); cd.setUint16(34, 0, true); cd.setUint16(36, 0, true);
+      cd.setUint32(38, 0, true); cd.setUint32(42, offset, true);
+      central.push(new Uint8Array(cd.buffer), nombre);
+      offset += 30 + nombre.length + tam;
+    });
+    var tamCentral = central.reduce(function (s, p) { return s + p.length; }, 0);
+    var fin = new DataView(new ArrayBuffer(22));
+    fin.setUint32(0, 0x06054b50, true); fin.setUint16(8, archivos.length, true); fin.setUint16(10, archivos.length, true);
+    fin.setUint32(12, tamCentral, true); fin.setUint32(16, offset, true);
+    return new Blob(partes.concat(central, [new Uint8Array(fin.buffer)]));
+  }
+
+  // Foto: se reduce a 600 px para que quepa en el navegador y vaya ligera.
+  function cargarFoto(archivo) {
+    if (!archivo || !/^image\//.test(archivo.type)) { avisar("Eso no parece una imagen. Prueba con una JPG o PNG."); return; }
+    var lector = new FileReader();
+    lector.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var max = 600, s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        estado.foto = c.toDataURL("image/jpeg", 0.88); estado.zoom = 1; estado.moverX = 0; estado.moverY = 0;
+        $("zoom").value = 1; $("mover-x").value = 0; $("mover-y").value = 0;
+        ponerFoto(estado.foto); marcarPropio(); avisar("Foto puesta. Ajústala con los deslizadores.");
+      };
+      img.onerror = function () { avisar("No he podido abrir esa imagen."); };
+      img.src = lector.result;
+    };
+    lector.readAsDataURL(archivo);
+  }
+  function ponerFoto(dataUrl) {
+    if (!dataUrl) { fotoImg = null; $("recorte").hidden = true; $("foto-quitar").hidden = true; repintar(); return; }
+    var img = new Image();
+    img.onload = function () { fotoImg = img; $("recorte").hidden = false; $("foto-quitar").hidden = false; repintar(); };
+    img.src = dataUrl;
+  }
+  function pintarMini() {
+    var c = $("foto-mini"), ctx = c.getContext("2d"), tema = temaActual();
+    ctx.clearRect(0, 0, c.width, c.height);
+    dibujarAvatar(ctx, 64, 64, 128, tema, LETRAS[estado.letra] || LETRAS.sans);
+  }
+
+  // ---------- Enlaces de los controles ----------
+  function volcarEstado() {
+    $("nombre").value = estado.nombre; $("usuario").value = estado.usuario; $("verificado").checked = !!estado.verificado;
+    $("textos").value = estado.textos; $("numerar").checked = !!estado.numerar;
+    $("color-fondo").value = estado.colorFondo; $("color-texto").value = estado.colorTexto;
+    $("zoom").value = estado.zoom; $("mover-x").value = estado.moverX; $("mover-y").value = estado.moverY;
+    ["formato", "fondo", "letra"].forEach(function (n) {
+      var r = document.querySelector('input[name="' + n + '"][value="' + estado[n] + '"]'); if (r) r.checked = true;
+    });
+    $("colores").hidden = estado.fondo !== "propio";
+  }
+  function enlazar() {
+    $("nombre").addEventListener("input", function (e) { estado.nombre = e.target.value; marcarPropio(); repintar(); });
+    $("usuario").addEventListener("input", function (e) { estado.usuario = e.target.value.replace(/^@+/, "").replace(/\s+/g, ""); if (e.target.value !== estado.usuario) e.target.value = estado.usuario; marcarPropio(); repintar(); });
+    $("verificado").addEventListener("change", function (e) { estado.verificado = e.target.checked; repintar(); });
+    $("textos").addEventListener("input", function (e) { estado.textos = e.target.value; marcarPropio(); repintar(); });
+    $("numerar").addEventListener("change", function (e) { estado.numerar = e.target.checked; repintar(); });
+    $("color-fondo").addEventListener("input", function (e) { estado.colorFondo = e.target.value; repintar(); });
+    $("color-texto").addEventListener("input", function (e) { estado.colorTexto = e.target.value; repintar(); });
+    ["zoom", "mover-x", "mover-y"].forEach(function (id) {
+      $(id).addEventListener("input", function (e) { estado[{ "zoom": "zoom", "mover-x": "moverX", "mover-y": "moverY" }[id]] = parseFloat(e.target.value); repintar(); });
+    });
+    document.querySelectorAll('input[type="radio"]').forEach(function (r) {
+      r.addEventListener("change", function () { estado[r.name] = r.value; $("colores").hidden = estado.fondo !== "propio"; repintar(); });
+    });
+    $("foto-elegir").addEventListener("click", function () { $("foto").click(); });
+    $("foto").addEventListener("change", function (e) { cargarFoto(e.target.files[0]); e.target.value = ""; });
+    $("foto-quitar").addEventListener("click", function () { estado.foto = null; ponerFoto(null); avisar("Foto quitada."); });
+    var zona = $("foto-zona");
+    ["dragenter", "dragover"].forEach(function (ev) { zona.addEventListener(ev, function (e) { e.preventDefault(); zona.classList.add("encima"); }); });
+    ["dragleave", "drop"].forEach(function (ev) { zona.addEventListener(ev, function (e) { e.preventDefault(); zona.classList.remove("encima"); }); });
+    zona.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files[0]) cargarFoto(e.dataTransfer.files[0]); });
+    $("bajar-todas").addEventListener("click", bajarTodas);
+    var olvidarArmado = false, botonOlvidar = $("olvidar");
+    botonOlvidar.addEventListener("click", function () {
+      if (!olvidarArmado) { olvidarArmado = true; botonOlvidar.textContent = "¿Seguro? Pulsa otra vez"; setTimeout(function () { olvidarArmado = false; botonOlvidar.textContent = "Olvidar mis datos"; }, 4000); return; }
+      try { localStorage.removeItem(CLAVE); } catch (e) { /* nada */ }
+      location.reload();
+    });
+    $("panel").addEventListener("submit", function (e) { e.preventDefault(); });
+  }
+
+  volcarEstado(); enlazar(); ponerFoto(estado.foto); pintarTodo(); pintarMini();
+  window.LaminaDeTexto = { separar: separar, comprobar: comprobar, crearZip: crearZip, crc32: crc32, estado: estado, reglas: { palabras: REGLAS_PALABRAS.length, estructuras: REGLAS_ESTRUCTURAS.length } };
+})();
+</script>
+</body>
+</html>
