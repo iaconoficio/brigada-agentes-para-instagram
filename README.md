@@ -4,6 +4,8 @@ La Brigada te prepara la semana de Instagram con tu voz: el guion del reel, el t
 
 **Tú apruebas y publicas.** Nada sale sin tu sí.
 
+**¿No eres técnico?** Instálala con la [página paso a paso](https://claude.ai/artifact/BRa5Sdb5pQTdmmvHsunLXZ): descargas, subida a Claude y tus primeros mensajes. Y si te sirve, dale una estrella a este repo con el botón «Star»: así la encuentra más gente.
+
 > **Versión 0.1.** Funciona en Claude. La versión para ChatGPT está en preparación.
 
 ## Qué la hace distinta
@@ -45,9 +47,11 @@ Cada agente tiene su partida, como en una cocina. Están en el orden en que suel
 
 ### En la app de Claude
 
+Si prefieres que te lleve de la mano, sigue la [página paso a paso](https://claude.ai/artifact/BRa5Sdb5pQTdmmvHsunLXZ).
+
 Según la [ayuda de Claude](https://support.claude.com/en/articles/12512180), las skills están en los planes Free, Pro, Max, Team y Enterprise. Desde el ordenador:
 
-1. **Activa la ejecución de código.** En **Settings > Capabilities**, enciende **Code execution and file creation**. Sin esto, los agentes no funcionan. En Team y Enterprise, si no ves la opción, pídesela a quien lleva la cuenta.
+1. **Activa la ejecución de código.** En **Settings > Capabilities** (en español, **Configuración > Capacidades**), enciende **Code execution and file creation** (**Ejecución de código y creación de archivos**). En la versión nueva de Claude se llama **Create and edit files** (**Crear y editar archivos**). Sin esto, los agentes no funcionan. En Team y Enterprise, si no ves la opción, pídesela a quien lleva la cuenta.
 2. Descarga los ocho agentes. Cada enlace baja un .zip ya preparado: no lo abras, se sube tal cual.
 
 | Agente | Descarga |
@@ -63,11 +67,11 @@ Según la [ayuda de Claude](https://support.claude.com/en/articles/12512180), la
 
 Si al descargar te aparece una carpeta y no un archivo .zip (Safari a veces lo abre solo), bájalo con otro navegador, como Chrome.
 
-3. En Claude, ve a **Customize > Skills**, pulsa **+**, luego **+ Create skill** y **Upload a skill**, y sube los ocho .zip, uno a uno. `brigada-para-llevar` necesita `brigada-emplatado`: sube los dos.
+3. En Claude, ve a **Customize > Skills** (**Personalizar > Habilidades**), pulsa **+**, luego **+ Create skill** (**+ Crear habilidad**) y **Upload a skill** (**Cargar una habilidad**), y sube los ocho .zip, uno a uno. `brigada-para-llevar` necesita `brigada-emplatado`: sube los dos.
 4. Crea un Proyecto para La Brigada y trabaja siempre dentro de él.
 5. Sigue con [tu primera semana](#tu-primera-semana-mensaje-a-mensaje).
 
-Los nombres de los menús son los de la ayuda de Claude. Si en tu app se ven distintos, sigue [la ayuda](https://support.claude.com/en/articles/12512180).
+Los nombres de los menús son los de la ayuda de Claude, en [inglés](https://support.claude.com/en/articles/12512180) y en [español](https://support.claude.com/es/articles/12512180). Si en tu app se ven distintos, sigue la ayuda.
 
 ### En Claude Code (terminal, escritorio o VS Code)
 
