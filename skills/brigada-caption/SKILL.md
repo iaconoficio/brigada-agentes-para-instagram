@@ -71,7 +71,18 @@ Sin Python, revisa a mano lo mismo: lo que cabe en unos 125 caracteres, que no p
 1. **El texto**, en un bloque listo para copiar y pegar.
 2. **Debajo, en dos o tres líneas:** debajo de qué va, qué se lee antes del «más», cómo acaba y qué ha dicho la revisión. Por ejemplo: «Va debajo del reel de los frenos. Antes del "más" se lee la pregunta del aceite. Acaba con una pregunta, sin vender. Revisión: lista».
 3. **El texto alternativo**, si es una foto: una o dos frases que describan la imagen para quien no la ve. Si es un carrusel, lo da brigada-carrusel, uno por lámina. Instagram tiene opciones de accesibilidad para describir las fotos; si la suya le deja escribir el texto alternativo, que lo pegue ahí.
-4. Una pregunta: «¿Lo publicas así o cambiamos algo?».
+4. **La lista de antes de publicar**, en un bloque corto que pueda tener al lado del móvil:
+
+   ```
+   ANTES DE PUBLICAR
+   [ ] Lo que se ve antes del «más» se entiende solo
+   [ ] Etiqueta de IA puesta, si hay vídeo, foto o voz con IA que parezcan reales
+   [ ] La canción, de las que te deja tu cuenta (y si lo vas a promocionar, de las libres para anuncios)
+   [ ] Un rato reservado para contestar los primeros comentarios
+   ```
+
+   Quita las líneas que no le toquen a esta pieza.
+5. Una pregunta: «¿Lo publicas así o cambiamos algo?».
 
 Si pide cambios, el texto nuevo es la v2. Guarda la v1 por si quiere volver.
 
@@ -81,6 +92,8 @@ Si pide cambios, el texto nuevo es la v2. Guarda la v1 por si quiere volver.
 - **Sus palabras, no las tuyas.** Nada de «Palabras que no dirías nunca». Los emojis, como los use ella según su ficha.
 - **Respeta «Lo que tu profesión no te deja decir»** tal como lo dejó escrito en su ficha.
 - **Mejor sin enlaces en el texto:** no se pueden pulsar. Escribe dónde está («el enlace está en mi perfil») y usa el de «Contacto para los textos». El script lo marca con OJO por si hay un motivo para dejarlo.
+- **Si la pieza lleva IA que parece real** (vídeo, foto o voz hechos o retocados con IA que pueden pasar por reales): recuérdale la etiqueta de IA de Meta al publicar (el nombre de la opción puede cambiar) y propón una frase sencilla en el texto que lo cuente, como «La voz de este vídeo está hecha con IA a partir de la mía». La frase es nuestra recomendación; avisar es lo que pide el Reglamento europeo de IA (art. 50.4) desde el 2 de agosto de 2026.
+- **La música, de la que se puede usar.** La biblioteca de música de Instagram es para uso personal y no es la misma en todas las cuentas. Si la pieza se va a promocionar como anuncio, solo sonidos libres para uso comercial, como la colección de sonidos de Meta.
 - **Una palabra clave que se escriba con el pulgar en un segundo.** Si el cierre es «comenta X», algo como ACEITE o CITA. Si lleva tilde y usa respuestas automáticas, que compruebe que la reconocen.
 
 ## Contrato con el resto de la brigada
@@ -95,6 +108,6 @@ Si pide cambios, el texto nuevo es la v2. Guarda la v1 por si quiere volver.
 
 ---
 
-La idea de enseñar lo que se ve antes del «más» y revisar el texto con un script parte de `ig-caption`, de Jake Schincariol (licencia MIT). La revisión en español, los cierres que no siempre venden, el caso del carrusel y el resto son nuestros.
+La idea de enseñar lo que se ve antes del «más» y revisar el texto con un script parte de `ig-caption`, de Jake Schincariol (licencia MIT). La revisión en español, los cierres que no siempre venden, el caso del carrusel y el resto son nuestros. La frase honesta cuando hay IA y la lista de antes de publicar se aprendieron en la comunidad Vive de lo Tuyo (Raúl Padilla), en noviembre de 2026; el texto es nuestro.
 
 La Brigada · Toni Mont · IA con Oficio · Versión oficial: [github.com/iaconoficio/brigada-agentes-para-instagram](https://github.com/iaconoficio/brigada-agentes-para-instagram)

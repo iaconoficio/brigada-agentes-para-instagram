@@ -43,6 +43,25 @@ Con eso, tres listas cortas:
 - **Lo que cambiaría** (tres cosas).
 - **Las tres primeras piezas**, que son la primera semana.
 
+### Si quiere, su hueco en el sector
+
+Es opcional. Si la persona te pasa entre diez y veinte reels de su sector o de su zona que le gusten o le preocupen (enlaces que puedas abrir, capturas o lo que cuente de cada uno), monta una tabla:
+
+| Empieza con... | A cámara | Manos y trabajo | Voz sobre planos | Solo carteles |
+| --- | --- | --- | --- | --- |
+| Una pregunta o una duda | | | | |
+| Un error o una cifra | | | | |
+| Una escena | | | | |
+| Una opinión o un mito | | | | |
+| Un antes y un después | | | | |
+| Una historia propia | | | | |
+
+En cada casilla, cuántos reels hay así. Las casillas llenas son lo que ya hace todo el mundo. Las vacías son un posible hueco para ella, y una de las tres primeras piezas puede ir ahí.
+
+- **No todas las vacías son una oportunidad:** puede que estén vacías porque no le van a ese oficio. Dilo así.
+- **Se copia la forma, nunca el vídeo:** ni sus frases ni sus planos.
+- **Solo lo que te dé ella.** No descargues vídeos ni entres con su sesión o sus cookies en ninguna red. Si te da las visitas de cada uno, apúntalas; si no, cuenta solo cuántos hay en cada casilla, sin inventarte cuál funciona.
+
 Las reglas del diagnóstico:
 
 - **Cada punto dice de dónde sale:** de qué publicación, de qué captura o de qué dato.
@@ -146,6 +165,6 @@ Si pide cambios, el plan nuevo es la v2. Copia la tabla de la v1 en «Versiones 
 
 ---
 
-La idea de un plan semanal que reparte el trabajo a los demás agentes, y los cinco tipos de pieza (que aquí llamamos patas), parten de `ig-plan`, de Jake Schincariol (licencia MIT). El diagnóstico de arranque, la duda de la semana, el calendario y el repaso de 48 horas son nuestros.
+La idea de un plan semanal que reparte el trabajo a los demás agentes, y los cinco tipos de pieza (que aquí llamamos patas), parten de `ig-plan`, de Jake Schincariol (licencia MIT). El diagnóstico de arranque, la duda de la semana, el calendario y el repaso de 48 horas son nuestros. La tabla del hueco en el sector (cómo empiezan frente a cómo se graban) se aprendió en la comunidad Vive de lo Tuyo (Raúl Padilla), en noviembre de 2026; el texto es nuestro.
 
 La Brigada · Toni Mont · IA con Oficio · Versión oficial: [github.com/iaconoficio/brigada-agentes-para-instagram](https://github.com/iaconoficio/brigada-agentes-para-instagram)

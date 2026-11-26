@@ -32,7 +32,23 @@ En dos líneas:
 
 ### 1. Tres ganchos de tres formas
 
-Escoge en el recetario tres formas que le vayan a esta idea. Que sean formas distintas de verdad: si los tres ganchos dicen lo mismo con otras palabras, solo tienes uno. Para cada uno escribe lo que se dice y el cartel del primer segundo, de seis palabras como mucho.
+Antes de escoger, mira qué tiene que conseguir este reel: sale de «Qué quieres conseguir primero», del plan o de lo que te diga. La gente no se para por el tipo de gancho, sino por lo que siente al verlo, y lo que tiene que sentir depende de lo que buscas:
+
+| Si el reel tiene que... | Que el gancho haga sentir | Formas del recetario que suelen ir bien |
+| --- | --- | --- |
+| Llegar a gente que no te conoce | Sorpresa, emoción o «esto me suena» | 3 La escena, 6 La cifra que duele, 8 El mito |
+| Que te escriba o te pida cita un cliente | «Eso me pasa a mí» o una promesa que puedes cumplir | 1 La pregunta que te hacen siempre, 2 El error que veo cada semana, 11 La orden |
+| Que lo vean hasta el final | Ganas de saber cómo acaba | 9 Del síntoma a la causa, 5 Tomar partido, 10 La confesión |
+
+Es nuestra orientación, no una regla: si la idea pide otra forma, úsala y dilo en una línea.
+
+Escoge en el recetario tres formas que le vayan a esta idea. Que sean formas distintas de verdad: si los tres ganchos dicen lo mismo con otras palabras, solo tienes uno. Cada gancho tiene tres capas, y las tres van en el primer segundo:
+
+- **Se oye:** lo que se dice.
+- **Se lee:** el cartel, de seis palabras como mucho.
+- **Se ve:** un gesto, un objeto o algo que pasa. Si no se ve nada, el gancho depende del sonido, y parte de la gente empieza con el sonido quitado.
+
+Y debajo, **la frase de unión**: la que lleva del gancho al contenido sin que se note el salto. Suele ser la del tramo «¿Y a mí qué?».
 
 ### 2. La nota de cada gancho
 
@@ -78,7 +94,10 @@ Llevo veintidós años viéndolo en el taller.
 - Entre corchetes, lo que se ve. No se dice.
 - Con `>` delante, el cartel en pantalla.
 
-Usa las palabras y el ritmo de su ficha. Antes de darlo por bueno, léelo en voz alta: donde haya que coger aire a mitad de frase, pártela en dos.
+Usa las palabras y el ritmo de su ficha. Antes de darlo por bueno, dos pruebas:
+
+- **En voz alta:** donde haya que coger aire a mitad de frase, pártela en dos.
+- **Con el sonido quitado:** tapa lo que se dice y lee solo los carteles y lo que se ve. Si así no se entiende de qué va y qué gana quien mira, falta un cartel o un plano.
 
 ### 4. Con cámara o sin cámara
 
@@ -93,6 +112,8 @@ La versión sin cámara cuenta lo mismo de otra manera:
 - Carteles en pantalla para todo lo importante.
 - La voz, según «Voz en off»: si dice que sí, su voz en off; si dice «por probar», dos versiones, una con voz y otra solo con carteles; si dice que no, solo carteles y música.
 - Planos de su trabajo que pueda grabar con el móvil en diez minutos: sus manos, sus herramientas, su local, el antes y el después. Caras de clientes, nunca sin su permiso.
+
+**Si tiene un avatar suyo hecho con IA** (con su cara y su voz, en su propia cuenta de HeyGen u otra herramienta): úsalo solo para lo que no puede grabar, como un plano que no le da tiempo o una versión en otro idioma. Nunca para que diga lo que ella no diría. Y va con la etiqueta de IA al publicar (mira «Antes de entregarlo, comprueba»).
 
 ### 5. Cronométralo
 
@@ -171,6 +192,6 @@ Si pide cambios, el guion nuevo es la v2. Guarda la v1 en el mismo mensaje o arc
 
 ---
 
-Esta skill parte de `ig-reel`, de Jake Schincariol (licencia MIT): de ahí vienen la idea de puntuar tres ganchos antes de escribir, la de cronometrar el guion y la de tratar los carteles como un guion aparte, además de los dos scripts de los que salen `puntua_gancho.py` y `tiempos.py`. La adaptación al español, el recetario, la versión sin cámara y el resto son nuestros.
+Esta skill parte de `ig-reel`, de Jake Schincariol (licencia MIT): de ahí vienen la idea de puntuar tres ganchos antes de escribir, la de cronometrar el guion y la de tratar los carteles como un guion aparte, además de los dos scripts de los que salen `puntua_gancho.py` y `tiempos.py`. La adaptación al español, el recetario, la versión sin cámara y el resto son nuestros. Elegir el gancho por lo que tiene que sentir quien mira, las tres capas del gancho, la frase de unión y la prueba del sonido quitado se aprendieron en la comunidad Vive de lo Tuyo (Raúl Padilla), en noviembre de 2026; el texto es nuestro.
 
 La Brigada · Toni Mont · IA con Oficio · Versión oficial: [github.com/iaconoficio/brigada-agentes-para-instagram](https://github.com/iaconoficio/brigada-agentes-para-instagram)
