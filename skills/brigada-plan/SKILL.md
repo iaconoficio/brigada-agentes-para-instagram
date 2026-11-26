@@ -165,6 +165,6 @@ Si pide cambios, el plan nuevo es la v2. Copia la tabla de la v1 en «Versiones 
 
 ---
 
-La idea de un plan semanal que reparte el trabajo a los demás agentes, y los cinco tipos de pieza (que aquí llamamos patas), parten de `ig-plan`, de Jake Schincariol (licencia MIT). El diagnóstico de arranque, la duda de la semana, el calendario y el repaso de 48 horas son nuestros. La tabla del hueco en el sector (cómo empiezan frente a cómo se graban) se aprendieron en la comunidad Vive de lo Tuyo (Raúl Padilla), en noviembre de 2026; el texto es nuestro.
+La idea de un plan semanal que reparte el trabajo a los demás agentes, y los cinco tipos de pieza (que aquí llamamos patas), parten de `ig-plan`, de Jake Schincariol (licencia MIT). El diagnóstico de arranque, la duda de la semana, el calendario y el repaso de 48 horas son nuestros. La tabla del hueco en el sector (cómo empiezan frente a cómo se graban) se aprendió en la comunidad Vive de lo Tuyo (Raúl Padilla), en noviembre de 2026; el texto es nuestro.
 
 La Brigada · Toni Mont · IA con Oficio · Versión oficial: [github.com/iaconoficio/brigada-agentes-para-instagram](https://github.com/iaconoficio/brigada-agentes-para-instagram)
